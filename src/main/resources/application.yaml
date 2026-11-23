@@ -1,0 +1,87 @@
+
+spring:
+  config:
+    import: "optional:file:./.env[.properties]"
+
+  modulith:
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: false
+      republish-outstanding-events-on-restart: false
+
+  application:
+    name: fintech-backend
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+neos:
+  terms:
+    current-version: "1.0"
+
+  kyc:
+    sumsub:
+      base-url: ${SUMSUB_BASE_URL:https://api.sumsub.com}
+      app-token: ${SUMSUB_APP_TOKEN:}
+      secret-key: ${SUMSUB_SECRET_KEY:}
+      level-name: ${SUMSUB_LEVEL_NAME:basic-kyc-level}
+      sdk-token-ttl-seconds: ${SUMSUB_SDK_TOKEN_TTL_SECONDS:600}
+      sandbox-mode: ${SUMSUB_SANDBOX_MODE:true}
+      webhook-enabled: ${SUMSUB_WEBHOOK_ENABLED:false}
+      webhook-secret: ${SUMSUB_WEBHOOK_SECRET:}
+
+  ledger:
+    formance:
+      schema-version: ${FORMANCE_SCHEMA_VERSION:v1.1.0}
+      connect-timeout: ${FORMANCE_CONNECT_TIMEOUT:2s}
+      read-timeout: ${FORMANCE_READ_TIMEOUT:5s}
+
+  backoffice:
+    enabled: ${NEOS_BACKOFFICE_ENABLED:false}
+    audience: ${NEOS_BACKOFFICE_AUDIENCE:}
+    client-id: ${NEOS_BACKOFFICE_CLIENT_ID:}
+    issuer: ${NEOS_BACKOFFICE_ISSUER:}
+    synthetic-credit:
+      enabled: ${NEOS_SYNTHETIC_CREDIT_ENABLED:false}
+
+  notifications:
+    microsoft-graph:
+      enabled: ${MICROSOFT_GRAPH_ENABLED:false}
+      tenant-id: ${AZURE_TENANT_ID:}
+      client-id: ${AZURE_CLIENT_ID:}
+      client-secret: ${AZURE_CLIENT_SECRET:}
+      sender: ${MAIL_FROM:no-reply@neos-world.com}
+      graph-base-url: ${MICROSOFT_GRAPH_BASE_URL:https://graph.microsoft.com/v1.0}
+
+    dispatcher:
+      enabled: ${NOTIFICATION_DISPATCHER_ENABLED:false}
+      batch-size: ${NOTIFICATION_DISPATCHER_BATCH_SIZE:25}
+      fixed-delay-ms: ${NOTIFICATION_DISPATCHER_FIXED_DELAY_MS:5000}
+      initial-delay-ms: ${NOTIFICATION_DISPATCHER_INITIAL_DELAY_MS:5000}
+
+  transfers:
+    customer-api-enabled: ${NEOS_CUSTOMER_TRANSFER_API_ENABLED:false}
+
+  recipients:
+    lookup:
+      max-requests-per-minute: ${NEOS_RECIPIENT_LOOKUP_MAX_PER_MINUTE:10}
+
+  payouts:
+    ledger-finalization-enabled: ${NEOS_PAYOUT_LEDGER_FINALIZATION_ENABLED:false}
+    reconciliation-enabled: ${NEOS_PAYOUT_RECONCILIATION_ENABLED:false}
+    notification-repair-enabled: ${NEOS_PAYOUT_NOTIFICATION_REPAIR_ENABLED:false}

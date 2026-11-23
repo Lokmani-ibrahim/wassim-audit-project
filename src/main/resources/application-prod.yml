@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  flyway:
+    enabled: false
+neos:
+  ledger:
+    formance:
+      base-url: ${FORMANCE_BASE_URL}
+      ledger-name: ${FORMANCE_LEDGER_NAME:neos}

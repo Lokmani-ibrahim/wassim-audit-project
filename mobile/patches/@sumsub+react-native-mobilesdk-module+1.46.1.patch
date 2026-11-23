@@ -1,0 +1,22 @@
+diff --git a/node_modules/@sumsub/react-native-mobilesdk-module/android/src/main/java/com/sumsub/msdk/plugins/reactnative/SNSMobileSdkReactNativeModule.java b/node_modules/@sumsub/react-native-mobilesdk-module/android/src/main/java/com/sumsub/msdk/plugins/reactnative/SNSMobileSdkReactNativeModule.java
+index 142feb7..ba55c67 100644
+--- a/node_modules/@sumsub/react-native-mobilesdk-module/android/src/main/java/com/sumsub/msdk/plugins/reactnative/SNSMobileSdkReactNativeModule.java
++++ b/node_modules/@sumsub/react-native-mobilesdk-module/android/src/main/java/com/sumsub/msdk/plugins/reactnative/SNSMobileSdkReactNativeModule.java
+@@ -58,7 +58,7 @@ public class SNSMobileSdkReactNativeModule extends ReactContextBaseJavaModule {
+ 
+     @ReactMethod
+     public void updateAccessToken(String accessToken) {
+-        Log.d(LOG_TAG, "Sumsub: updateAccessToken " + accessToken + " " + this);
++        Log.d(LOG_TAG, "Sumsub: updateAccessToken (token redacted, present=" + (accessToken != null) + ") " + this);
+         newAccessToken = accessToken;
+     }
+ 
+@@ -160,7 +160,7 @@ public class SNSMobileSdkReactNativeModule extends ReactContextBaseJavaModule {
+                                     return newAccessToken;
+                                 }
+                             }
+-                            Log.d(LOG_TAG, "Sumsub: Received new token: " + newAccessToken + ' ' + Thread.currentThread().getName());
++                            Log.d(LOG_TAG, "Sumsub: Received new token (redacted) @ " + Thread.currentThread().getName());
+                             return newAccessToken;
+                         }
+                     };
