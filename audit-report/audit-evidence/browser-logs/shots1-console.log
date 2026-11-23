@@ -1,0 +1,15 @@
+[console.error] Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)
+[requestfailed] GET http://127.0.0.1:5173/node_modules/.vite/deps/keycloak-js.js?v=0876f0f2 net::ERR_ABORTED
+[console.debug] [vite] connecting...
+[console.debug] [vite] connected.
+[console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[info] connected mode body after 12.087s: 
+[console.debug] [vite] connecting...
+[console.debug] [vite] connected.
+[console.info] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+[console.warning] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+[console.warning] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+[console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[console.verbose] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o
+[info] demo url http://127.0.0.1:5174/login

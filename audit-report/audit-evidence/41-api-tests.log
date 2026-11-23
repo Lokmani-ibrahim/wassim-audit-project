@@ -1,0 +1,52 @@
+ROPC grant on neos-dev-cli with password '1': token_obtained=yes
+claims: aud= account azp= neos-dev-cli email_verified= False realm_roles= ['offline_access', 'CUSTOMER', 'uma_authorization', 'default-roles-neos'] exp-iat= 300
+--- unauthenticated
+GET    /api/wallets                                  -> 401  body=
+GET    /api/auth/me                                  -> 401  body=
+GET    /actuator/health                              -> 200  body={"groups":["liveness","readiness"],"status":"UP"}
+GET    /actuator/info                                -> 401  body=
+GET    /actuator/env                                 -> 401  body=
+GET    /actuator/modulith                            -> 401  body=
+--- authenticated customer (self-registered, weak password, email not verified)
+GET    /api/auth/me                                  -> 200  body={"onboardingEligibility":"READY","subject":"c843b941-b38c-4c77-b603-851f136c8c76","email":"audit.weakpw@example.test","username":"audit.weakpw@example.test"}
+GET    /api/profile                                  -> 404  body={"timestamp":"2026-11-23T20:09:54.309Z","status":404,"error":"Not Found","trace":"com.fintech.onboarding.CustomerProfileNotFoundException: Customer profile not found. Personal onboarding is required.\n\tat java.base/java
+GET    /api/wallets                                  -> 404  body={"timestamp":"2026-11-23T20:09:54.327Z","status":404,"error":"Not Found","trace":"com.fintech.ledger.CustomerWalletsCustomerNotFoundException: Customer profile not found. Personal onboarding is required.\n\tat java.base/
+GET    /api/transactions?currency=TND                -> 404  body={"timestamp":"2026-11-23T20:09:54.345Z","status":404,"error":"Not Found","trace":"com.fintech.ledger.TransactionHistoryCustomerNotFoundException: Customer profile not found. Personal onboarding is required.\n\tat java.ba
+GET    /api/transactions?currency=TND&pageSize=1000  -> 500  body={"timestamp":"2026-11-23T20:09:54.362Z","status":500,"error":"Internal Server Error","trace":"java.lang.IllegalArgumentException: pageSize must be between 1 and 100\n\tat com.fintech.ledger.CustomerTransactionHistoryServ
+GET    /api/notifications                            -> 404  body={"timestamp":"2026-11-23T20:09:54.378Z","status":404,"error":"Not Found","trace":"com.fintech.notifications.NotificationFeedCustomerNotFoundException: Customer profile not found. Personal onboarding is required.\n\tat ja
+POST   /api/kyc/start                                -> 409  body={"errorCode":"ONBOARDING_REQUIRED","message":"Personal onboarding must be completed before starting KYC","status":409}
+POST   /api/onboarding/personal                      -> 400  body={"timestamp":"2026-11-23T20:09:54.412Z","status":400,"error":"Bad Request","trace":"org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character ('b' (code 98)): was expectin
+GET    /api/backoffice/me                            -> 403  body=
+GET    /api/backoffice/customers                     -> 403  body=
+GET    /api/admin/transfers/reconciliation           -> 404  body={"timestamp":"2026-11-23T20:09:54.448Z","status":404,"error":"Not Found","trace":"org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/admin/transfers/reconciliation for request '/api
+--- onboarding + ledger-dependent endpoints (Formance not running)
+POST   /api/onboarding/personal                      -> 200  body={"userId":"97cddace-3a3c-47ef-ac39-8fe029868763","deviceId":"d55d9c27-fe7a-489e-b079-6c71611eaadb","kycStatus":"NOT_STARTED","termsVersion":"1.0"}
+GET    /api/profile                                  -> 200  body={"userId":"97cddace-3a3c-47ef-ac39-8fe029868763","email":"audit.weakpw@example.test","phoneNumber":"<script>alert(1)</script>","accountStatus":"PENDING_KYC","kycStatus":"NOT_STARTED","onboardedAt":"2026-11-23T20:10:14.678684Z","createdAt":"
+GET    /api/wallets                                  -> 503  body={"timestamp":"2026-11-23T20:10:14.765Z","status":503,"error":"Service Unavailable","trace":"org.springframework.web.server.ResponseStatusException: 503 SERVICE_UNAVAILABLE \"Wallet balances are temporarily unavailable\"\n\tat com.fintech.le
+GET    /api/transactions?currency=TND                -> 500  body={"timestamp":"2026-11-23T20:10:14.781Z","status":500,"error":"Internal Server Error","trace":"com.fintech.ledger.LedgerProviderUnavailableException: Unable to read transaction history for account 'users:97cddace-3a3c-47ef-ac39-8fe029868763:
+GET    /api/notifications                            -> 200  body={"items":[],"hasMore":false,"nextCursor":null}
+POST   /api/kyc/start                                -> 502  body={"errorCode":"SUMSUB_UPSTREAM_ERROR","message":"Sumsub returned an invalid response","status":502}
+POST   /api/kyc/sdk-token                            -> 409  body={"errorCode":"KYC_NOT_STARTED","message":"Start KYC verification first","status":409}
+--- recipient lookup rate limit (limit 10/min)
+lookup #01 -> 403
+lookup #02 -> 403
+lookup #03 -> 403
+lookup #04 -> 403
+lookup #05 -> 403
+lookup #06 -> 403
+lookup #07 -> 403
+lookup #08 -> 403
+lookup #09 -> 403
+lookup #10 -> 403
+lookup #11 -> 429
+lookup #12 -> 429
+--- internal transfer (sender not KYC approved)
+POST   /api/transfers/internal                       -> 403  body=
+POST   /api/transfers/internal                       -> 400  body={"timestamp":"2026-11-23T20:10:15.476Z","status":400,"error":"Bad Request","trace":"org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.fintech.ledger.internal.taxonomy
+--- security headers on API response
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY

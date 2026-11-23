@@ -1,0 +1,17 @@
+$ npm run build
+
+> neos-backoffice@0.1.0 build
+> tsc -b && vite build && node scripts/check-production-build.mjs
+
+vite v6.4.5 building for production...
+transforming...
+✓ 37 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                          0.36 kB │ gzip:  0.27 kB
+dist/assets/index-B3JsdvTN.css           5.09 kB │ gzip:  1.67 kB
+dist/assets/keycloak-dpop-DYAIfExj.js    6.64 kB │ gzip:  2.59 kB
+dist/assets/index-BDll-x4o.js          205.76 kB │ gzip: 63.82 kB
+✓ built in 728ms
+Production build excludes demo entry and fixture markers (3 assets checked)
+EXIT=0

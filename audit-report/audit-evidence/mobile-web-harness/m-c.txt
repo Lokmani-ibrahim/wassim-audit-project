@@ -1,0 +1,28 @@
+shot:m11-home
+click:Convert
+wait:2500
+shot:m14-convert
+body:convert
+click:Go back
+wait:1500
+click:Details
+wait:2500
+shot:m15-details
+body:details
+click:Go back
+wait:1500
+aria:^Notifications$
+wait:2500
+shot:m16-notifications
+body:notif
+click:Go back
+wait:1500
+click:Activity
+wait:2500
+shot:m17-activity
+body:activity
+click:Profile
+wait:2500
+shot:m18-profile
+body:profile
+labels

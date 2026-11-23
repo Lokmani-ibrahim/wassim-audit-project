@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Git Flow cible</title>
+<style>body{margin:0;background:#fff} svg text{font-family:"Liberation Sans",Arial,sans-serif}</style></head>
+<body>
+<svg id="d" width="1400" height="560" viewBox="0 0 1400 560" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const svg=document.getElementById('d');const NS='http://www.w3.org/2000/svg';
+function el(t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!==undefined)e.textContent=txt;svg.appendChild(e);return e;}
+el('rect',{width:1400,height:560,fill:'#fff'});
+const lanes=[
+ ['main','#1F2A44','Production · protégée · tags vX.Y.Z'],
+ ['hotfix/*','#B3261E','Correctif urgent depuis main'],
+ ['release/*','#C76A00','Stabilisation → environnement de recette'],
+ ['develop (= integration)','#C9A227','Intégration continue → environnement dev'],
+ ['feature/*  fix/*','#2E7D32','1 tâche = 1 branche courte → PR'],
+];
+const L=250,R=1110,TOPY=50,gap=92; const Y=i=>TOPY+gap*i;
+lanes.forEach(([n,c,d],i)=>{
+  el('text',{x:20,y:Y(i)+5,'font-size':16,'font-weight':'bold',fill:c},n);
+  el('text',{x:1130,y:Y(i)+5,'font-size':13,fill:'#444'},d);
+});
+// main line
+el('line',{x1:L,y1:Y(0),x2:R,y2:Y(0),stroke:'#1F2A44','stroke-width':4});
+el('line',{x1:L,y1:Y(3),x2:R,y2:Y(3),stroke:'#C9A227','stroke-width':4});
+function seg(i,a,b,c){el('line',{x1:a,y1:Y(i),x2:b,y2:Y(i),stroke:c,'stroke-width':4});}
+function link(i1,x1,i2,x2,c,dash){el('path',{d:`M${x1},${Y(i1)} C${(x1+x2)/2},${Y(i1)} ${(x1+x2)/2},${Y(i2)} ${x2},${Y(i2)}`,fill:'none',stroke:c,'stroke-width':2.5,'stroke-dasharray':dash||''});}
+function dot(i,x,c,r){el('circle',{cx:x,cy:Y(i),r:r||8,fill:c,stroke:'#fff','stroke-width':2});}
+function tag(i,x,t){el('rect',{x:x-34,y:Y(i)-38,width:68,height:22,rx:5,fill:'#1F2A44'});el('text',{x:x,y:Y(i)-22,'font-size':13,fill:'#fff','text-anchor':'middle','font-weight':'bold'},t);}
+// initial
+dot(0,L+20,'#1F2A44'); tag(0,L+20,'v0.9.0');
+link(0,L+20,3,L+70,'#C9A227'); dot(3,L+70,'#C9A227');
+// feature 1
+link(3,L+90,4,L+130,'#2E7D32'); seg(4,L+130,L+250,'#2E7D32'); dot(4,L+160,'#2E7D32');dot(4,L+215,'#2E7D32');
+link(4,L+250,3,L+290,'#2E7D32'); dot(3,L+290,'#C9A227');
+el('text',{x:L+190,y:Y(4)+30,'font-size':13,fill:'#2E7D32','text-anchor':'middle'},'PR + CI verte + 1 revue');
+// feature 2
+link(3,L+310,4,L+350,'#2E7D32'); seg(4,L+350,L+430,'#2E7D32'); dot(4,L+390,'#2E7D32');
+link(4,L+430,3,L+470,'#2E7D32'); dot(3,L+470,'#C9A227');
+// release
+link(3,L+490,2,L+530,'#C76A00'); seg(2,L+530,L+660,'#C76A00'); dot(2,L+560,'#C76A00'); dot(2,L+620,'#C76A00');
+el('text',{x:L+550,y:Y(2)-20,'font-size':13,fill:'#C76A00','text-anchor':'middle'},'release/1.0 : recette, correctifs');
+link(2,L+660,0,L+700,'#C76A00'); dot(0,L+700,'#1F2A44',10); tag(0,L+700,'v1.0.0');
+link(2,L+660,3,L+700,'#C76A00','6 4'); dot(3,L+700,'#C9A227');
+// hotfix
+link(0,L+740,1,L+780,'#B3261E'); seg(1,L+780,L+820,'#B3261E'); dot(1,L+800,'#B3261E');
+link(1,L+820,0,L+850,'#B3261E'); dot(0,L+850,'#1F2A44',10); tag(0,L+850,'v1.0.1');
+link(1,L+820,3,L+850,'#B3261E','6 4'); dot(3,L+850,'#C9A227');
+el('text',{x:20,y:525,'font-size':13,fill:'#555'},'Pointillés = report obligatoire vers develop. Les environnements (dev, recette, production) sont des cibles de déploiement liées aux branches/tags, pas des branches « staging » ou « prod » supplémentaires.');
+</script>
+</body></html>

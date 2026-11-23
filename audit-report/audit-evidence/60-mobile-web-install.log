@@ -1,0 +1,24 @@
+› Installing 3 SDK 55.0.0 compatible native modules using npm
+> npm install
+
+> neos-mobile@1.0.0 postinstall
+> patch-package
+
+patch-package 8.0.1
+Applying patches...
+@sumsub/react-native-mobilesdk-module@1.46.1 ✔
+
+added 20 packages, and audited 881 packages in 7s
+
+171 packages are looking for funding
+  run `npm fund` for details
+
+18 vulnerabilities (16 moderate, 2 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.

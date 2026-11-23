@@ -1,0 +1,15 @@
+$ npm test
+
+> neos-backoffice@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 /tmp/claude-1000/-home-salem-T-l-chargements/0db614ce-a1d3-43d8-829f-38752db77511/scratchpad/run/neos/backoffice
+
+
+ Test Files  5 passed (5)
+      Tests  33 passed (33)
+   Start at  20:57:25
+   Duration  1.02s (transform 248ms, setup 0ms, import 662ms, tests 636ms, environment 1.70s)
+
+EXIT=0

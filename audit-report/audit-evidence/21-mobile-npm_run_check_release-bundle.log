@@ -1,0 +1,31 @@
+$ npm run check:release-bundle
+
+> neos-mobile@1.0.0 check:release-bundle
+> node scripts/check-release-bundle.mjs
+
+Exporting production-like Android bundle to /tmp/neos-release-bundle-EBQrhd
+Starting Metro Bundler
+
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android ./index.ts ▓▓▓▓▓▓░░░░░░░░░░ 41.6% (356/552)
+Android ./index.ts ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 93.7% (937/968)
+Android Bundled 9572ms index.ts (990 modules)
+
+› Assets (18):
+node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Feather.ttf (56KB)
+node_modules/@react-navigation/elements/lib/module/assets/back-icon-mask.png (653B)
+node_modules/@react-navigation/elements/lib/module/assets/back-icon.png (4 variations | 152B)
+node_modules/@react-navigation/elements/lib/module/assets/clear-icon.png (4 variations | 425B)
+node_modules/@react-navigation/elements/lib/module/assets/close-icon.png (4 variations | 235B)
+node_modules/@react-navigation/elements/lib/module/assets/search-icon.png (4 variations | 599B)
+
+› android bundles (1):
+_expo/static/js/android/index-747f6b359bb571189e624811bc2906ea.hbc (2.8MB)
+
+› Files (1):
+metadata.json (1.3KB)
+
+Exported: /tmp/neos-release-bundle-EBQrhd
+Scanned 20 files, 2782903 bytes of JS/bytecode.
+OK: 0 mock or dev-only markers found in the release bundle.
+EXIT=0

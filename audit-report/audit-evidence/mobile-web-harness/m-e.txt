@@ -1,0 +1,10 @@
+click:Activity
+wait:2500
+shot:m17-activity
+body:activity
+click:Profile
+wait:2500
+shot:m18-profile
+full:m18-profile-full
+body:profile
+labels

@@ -1,0 +1,2 @@
+2026-11-23T20:20:05Z	FATAL	Fatal error	rootfs scan error: scan error: scan failed: failed analysis: post analysis error: post analysis error: Unable to initialize the Java DB: Java DB update failed: OCI artifact error: failed to download Java DB: failed to download artifact from ghcr.io/aquasecurity/trivy-java-db:1: oci download error: copy error: stream error: stream ID 1; PROTOCOL_ERROR; received from peer
+EXIT=1

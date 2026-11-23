@@ -1,0 +1,3 @@
+[console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[api 200] GET /api/backoffice/me
+[info] staff after login url=http://localhost:5173/ body=NEOS BACKOFFICE WORKSPACE Home Customers Local isolated realm Staff workspace ST Staff session Local isolated realm Sign out Backoffice Signed in to the connected staff workspace. Staff access active Your session is connected to the configured NEOS environment.

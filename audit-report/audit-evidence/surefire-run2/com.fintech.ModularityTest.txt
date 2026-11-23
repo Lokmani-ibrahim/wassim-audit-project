@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: com.fintech.ModularityTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.201 s <<< FAILURE! -- in com.fintech.ModularityTest
+com.fintech.ModularityTest.verifiesModuleStructure -- Time elapsed: 0.197 s <<< ERROR!
+org.springframework.modulith.core.Violations: 
+- Module 'onboarding' depends on non-exposed type com.fintech.identity.api.AuthController within module 'identity'!
+Class <com.fintech.onboarding.api.OnboardingApiErrorHandler> has annotation member of type <com.fintech.identity.api.AuthController> in (OnboardingApiErrorHandler.java:0)
+	at org.springframework.modulith.core.Violations.and(Violations.java:141)
+	at org.springframework.modulith.core.ApplicationModules.detectViolations(ApplicationModules.java:497)
+	at org.springframework.modulith.core.ApplicationModules.verify(ApplicationModules.java:451)
+	at org.springframework.modulith.core.ApplicationModules.verify(ApplicationModules.java:435)
+	at com.fintech.ModularityTest.verifiesModuleStructure(ModularityTest.java:12)
+

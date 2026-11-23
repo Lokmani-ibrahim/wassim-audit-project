@@ -1,0 +1,9 @@
+click:Add money
+wait:1500
+click:Go back
+wait:1500
+click:Send
+wait:2500
+shot:m13-send
+body:send
+labels

@@ -1,0 +1,7 @@
+2026-11-23 20:08:07,140 WARN  [org.keycloak.common.Profile] (build-17) Deprecated features identity-brokering-api:v1, twitter-broker:v1 enabled by default. Check the upgrading guide for steps to use later versions if ava
+2026-11-23 20:08:14,853 WARN  [org.keycloak.common.Profile] (main) Deprecated features identity-brokering-api:v1, twitter-broker:v1 enabled by default. Check the upgrading guide for steps to use later versions if availab
+2026-11-23 20:08:20,124 INFO  [org.keycloak.exportimport.dir.DirImportProvider] (main) Importing from directory /opt/keycloak/bin/../data/import
+2026-11-23 20:08:21,832 INFO  [org.keycloak.services] (main) KC-SERVICES0030: Full model import requested. Strategy: IGNORE_EXISTING
+2026-11-23 20:08:24,488 INFO  [org.keycloak.exportimport.util.ImportUtils] (main) Realm 'neos' imported
+2026-11-23 20:08:24,492 INFO  [org.keycloak.services] (main) KC-SERVICES0032: Import finished successfully
+2026-11-23 20:08:25,038 INFO  [io.quarkus] (main) Keycloak 26.7.2 on JVM (powered by Quarkus 3.33.3.1) started in 13.676s. Listening on: http://0.0.0.0:8080

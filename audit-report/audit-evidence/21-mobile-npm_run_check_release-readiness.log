@@ -1,0 +1,17 @@
+$ npm run check:release-readiness
+
+> neos-mobile@1.0.0 check:release-readiness
+> tsx scripts/release-readiness.ts
+
+NEOS release readiness (features that would be unavailable with EXPO_PUBLIC_MOCK_FEATURES=none)
+
+  none: every mockable feature has a real implementation.
+
+Real implementation exists for: auth, onboarding, kyc, kycCapture, wallets, notifications
+Not available yet (honest placeholder screens, no service call, not mocks): none
+Sandbox only (placeholder in a production build):
+  Convert (FX demo: sandbox builds only)
+  Add money (sandbox preview: example deposit instructions, no credit; real top-up pending)
+
+0 of 6 mockable features have no real implementation yet.
+EXIT=0

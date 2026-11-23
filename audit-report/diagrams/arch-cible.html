@@ -1,0 +1,126 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Architecture cible</title>
+<style>body{margin:0;background:#fff} svg text{font-family:"Liberation Sans",Arial,sans-serif}</style></head>
+<body>
+<svg id="d" width="1400" height="860" viewBox="0 0 1400 860" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1F2A44"/></marker>
+    <marker id="gr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2E7D32"/></marker>
+  </defs>
+  <rect width="1400" height="860" fill="#fff"/>
+
+  <!-- clients -->
+  <rect x="60" y="30" width="330" height="80" rx="10" fill="#1F2A44"/>
+  <text x="225" y="63" font-size="18" fill="#fff" text-anchor="middle" font-weight="bold">Mobile — React Native / Expo</text>
+  <text x="225" y="89" font-size="14" fill="#E8D9A0" text-anchor="middle">conservé · montée Expo SDK · FR/AR</text>
+  <rect x="430" y="30" width="330" height="80" rx="10" fill="#1F2A44"/>
+  <text x="595" y="63" font-size="18" fill="#fff" text-anchor="middle" font-weight="bold">Backoffice — React</text>
+  <text x="595" y="89" font-size="14" fill="#E8D9A0" text-anchor="middle">conservé · servi par Nginx (image)</text>
+
+  <line x1="225" y1="110" x2="225" y2="146" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="595" y1="110" x2="595" y2="146" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <line x1="760" y1="70" x2="816" y2="70" stroke="#C9A227" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="788" y="60" font-size="12" fill="#7A5F00" text-anchor="middle" font-weight="bold">OIDC</text>
+  <!-- gateway -->
+  <rect x="60" y="150" width="700" height="70" rx="10" fill="#2E7D32"/>
+  <text x="410" y="180" font-size="18" fill="#fff" text-anchor="middle" font-weight="bold">NOUVEAU · Reverse proxy (Traefik ou Nginx)</text>
+  <text x="410" y="204" font-size="14" fill="#E3F2E5" text-anchor="middle">TLS · même origine /api · limitation de débit globale · en-têtes de sécurité · logs d'accès</text>
+
+  <!-- Keycloak -->
+  <rect x="820" y="30" width="520" height="190" rx="10" fill="#F4EEDB" stroke="#C9A227" stroke-width="2"/>
+  <text x="1080" y="62" font-size="18" fill="#1F2A44" text-anchor="middle" font-weight="bold">Keycloak (conservé, durci)</text>
+  <g font-size="14" fill="#1F2A44">
+    <text x="840" y="92">• realm staff séparé + MFA obligatoire</text>
+    <text x="840" y="116">• e-mail vérifié, politique de mots de passe,</text>
+    <text x="856" y="136">détection de force brute</text>
+    <text x="840" y="160">• client neos-dev-cli retiré hors dev</text>
+    <text x="840" y="184">• audience neos-api contrôlée par le backend</text>
+    <text x="840" y="208">• thème NEOS monté dans l'image</text>
+  </g>
+
+  <line x1="410" y1="220" x2="410" y2="256" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- backend -->
+  <rect x="60" y="260" width="1280" height="270" rx="12" fill="#F2F2F2" stroke="#1F2A44" stroke-width="2"/>
+  <text x="80" y="292" font-size="20" fill="#1F2A44" font-weight="bold">Backend Spring Boot — monolithe modulaire conservé et consolidé</text>
+  <text x="80" y="316" font-size="14" fill="#444">Erreurs RFC 9457 (ProblemDetail + errorCode) · contrat OpenAPI généré · Modulith vérifié en CI · image Docker multi-étapes (JRE, non-root)</text>
+
+  <g font-size="15">
+    <rect x="80" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="150" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">identity</text><text x="150" y="390" text-anchor="middle" font-size="12" fill="#555">+ e-mail vérifié</text>
+    <rect x="232" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="302" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">onboarding</text><text x="302" y="390" text-anchor="middle" font-size="12" fill="#555">+ validation E.164</text>
+    <rect x="384" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="454" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">kyc</text><text x="454" y="390" text-anchor="middle" font-size="12" fill="#555">inchangé</text>
+    <rect x="536" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="606" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">notifications</text><text x="606" y="390" text-anchor="middle" font-size="12" fill="#555">inchangé</text>
+    <rect x="688" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="758" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">backoffice</text><text x="758" y="390" text-anchor="middle" font-size="12" fill="#555">+ revue KYC, actions</text>
+    <rect x="840" y="336" width="140" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="910" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">payments</text><text x="910" y="390" text-anchor="middle" font-size="12" fill="#555">implémenté ou retiré</text>
+    <rect x="992" y="336" width="160" height="70" rx="8" fill="#fff" stroke="#9AA3B5"/><text x="1072" y="368" text-anchor="middle" font-weight="bold" fill="#1F2A44">shared</text><text x="1072" y="390" text-anchor="middle" font-size="12" fill="#555">erreurs communes</text>
+  </g>
+  <rect x="80" y="420" width="1240" height="94" rx="10" fill="#FFF4E0" stroke="#C76A00" stroke-width="2"/>
+  <text x="100" y="446" font-size="15" fill="#8a4a00" font-weight="bold">Module ledger découpé (refactoring progressif, sans changer d'architecture) :</text>
+  <g font-size="14">
+    <rect x="100" y="458" width="170" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="185" y="484" text-anchor="middle" fill="#8a4a00">wallets</text>
+    <rect x="285" y="458" width="170" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="370" y="484" text-anchor="middle" fill="#8a4a00">transfers</text>
+    <rect x="470" y="458" width="170" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="555" y="484" text-anchor="middle" fill="#8a4a00">fx</text>
+    <rect x="655" y="458" width="170" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="740" y="484" text-anchor="middle" fill="#8a4a00">payouts</text>
+    <rect x="840" y="458" width="170" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="925" y="484" text-anchor="middle" fill="#8a4a00">reconciliation</text>
+    <rect x="1025" y="458" width="275" height="42" rx="6" fill="#fff" stroke="#C76A00"/><text x="1162" y="484" text-anchor="middle" fill="#8a4a00">port LedgerProvider (Formance isolé)</text>
+  </g>
+
+  <!-- data -->
+  <g stroke="#1F2A44" stroke-width="2.5">
+    <line x1="160" y1="530" x2="160" y2="566" marker-end="url(#a)"/>
+    <line x1="400" y1="530" x2="400" y2="566" marker-end="url(#a)"/>
+    <line x1="640" y1="530" x2="640" y2="566" marker-end="url(#a)"/>
+    <line x1="880" y1="530" x2="880" y2="566" marker-end="url(#a)"/>
+    <line x1="1120" y1="530" x2="1120" y2="566" marker-end="url(#a)"/>
+  </g>
+  <g>
+    <rect x="60" y="570" width="210" height="88" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="165" y="600" font-size="16" text-anchor="middle" font-weight="bold" fill="#1F2A44">PostgreSQL (conservé)</text>
+    <text x="165" y="622" font-size="13" text-anchor="middle" fill="#333">sauvegardes, PITR,</text>
+    <text x="165" y="641" font-size="13" text-anchor="middle" fill="#333">rôles durcis (ops/)</text>
+    <rect x="300" y="570" width="210" height="88" rx="10" fill="#2E7D32"/>
+    <text x="405" y="600" font-size="16" text-anchor="middle" font-weight="bold" fill="#fff">NOUVEAU · Redis</text>
+    <text x="405" y="622" font-size="13" text-anchor="middle" fill="#E3F2E5">limitation de débit</text>
+    <text x="405" y="641" font-size="13" text-anchor="middle" fill="#E3F2E5">partagée, cache court</text>
+    <rect x="540" y="570" width="210" height="88" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="645" y="600" font-size="16" text-anchor="middle" font-weight="bold" fill="#1F2A44">Formance Ledger</text>
+    <text x="645" y="622" font-size="13" text-anchor="middle" fill="#333">conservé, fourni en</text>
+    <text x="645" y="641" font-size="13" text-anchor="middle" fill="#333">compose pour le dev</text>
+    <rect x="780" y="570" width="210" height="88" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="885" y="600" font-size="16" text-anchor="middle" font-weight="bold" fill="#1F2A44">Sumsub</text>
+    <text x="885" y="622" font-size="13" text-anchor="middle" fill="#333">webhook HMAC</text>
+    <text x="885" y="641" font-size="13" text-anchor="middle" fill="#333">testé en recette</text>
+    <rect x="1020" y="570" width="210" height="88" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="1125" y="600" font-size="16" text-anchor="middle" font-weight="bold" fill="#1F2A44">Microsoft Graph</text>
+    <text x="1125" y="622" font-size="13" text-anchor="middle" fill="#333">allowlist d'adresses</text>
+    <text x="1125" y="641" font-size="13" text-anchor="middle" fill="#333">hors production</text>
+  </g>
+
+  <!-- ops band -->
+  <rect x="60" y="690" width="1280" height="150" rx="12" fill="#fff" stroke="#2E7D32" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="80" y="720" font-size="17" fill="#2E7D32" font-weight="bold">NOUVEAU · Industrialisation</text>
+  <g font-size="14" fill="#1F2A44">
+    <rect x="80" y="735" width="290" height="90" rx="8" fill="#EEF7EF"/>
+    <text x="95" y="760" font-weight="bold">CI GitHub Actions</text>
+    <text x="95" y="781">mvn verify · tsc · lint · tests</text>
+    <text x="95" y="800">npm audit · Trivy · Modulith</text>
+    <text x="95" y="819">branche protégée = CI verte</text>
+    <rect x="385" y="735" width="290" height="90" rx="8" fill="#EEF7EF"/>
+    <text x="400" y="760" font-weight="bold">Images + registre</text>
+    <text x="400" y="781">backend (JRE 21, non-root)</text>
+    <text x="400" y="800">backoffice (Nginx statique)</text>
+    <text x="400" y="819">tag = version Git</text>
+    <rect x="690" y="735" width="290" height="90" rx="8" fill="#EEF7EF"/>
+    <text x="705" y="760" font-weight="bold">Déploiement</text>
+    <text x="705" y="781">Docker Compose (recette, prod v1)</text>
+    <text x="705" y="800">Kubernetes plus tard, si</text>
+    <text x="705" y="819">plusieurs instances requises</text>
+    <rect x="995" y="735" width="325" height="90" rx="8" fill="#EEF7EF"/>
+    <text x="1010" y="760" font-weight="bold">Observabilité et secrets</text>
+    <text x="1010" y="781">Actuator + Prometheus/Grafana</text>
+    <text x="1010" y="800">logs JSON centralisés, alertes</text>
+    <text x="1010" y="819">secrets hors dépôt (coffre)</text>
+  </g>
+</svg>
+</body></html>

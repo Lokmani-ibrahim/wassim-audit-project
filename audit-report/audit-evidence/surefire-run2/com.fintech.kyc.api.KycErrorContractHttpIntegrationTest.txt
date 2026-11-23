@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.fintech.kyc.api.KycErrorContractHttpIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.139 s -- in com.fintech.kyc.api.KycErrorContractHttpIntegrationTest

@@ -1,0 +1,1414 @@
+$ npm test
+
+> neos-mobile@1.0.0 test
+> tsx --test tests/journey.test.ts tests/config.test.ts tests/mocks.test.ts tests/money.test.ts tests/apiClient.test.ts tests/profileMapping.test.ts tests/logout.test.ts tests/credentialQueue.test.ts tests/wallets.test.ts tests/verifiedScreens.test.ts tests/amountInput.test.ts tests/transferEngine.test.ts tests/historyPaging.test.ts tests/displayName.test.ts tests/appLock.test.ts tests/sumsub.test.ts tests/kycFlow.test.ts tests/receipts.test.ts tests/notifications.test.ts tests/displayParts.test.ts tests/fx.test.ts tests/topUp.test.ts
+
+TAP version 13
+# Subtest: amount input: scale 2 (EUR/USD/GBP/AED/MUR)
+ok 1 - amount input: scale 2 (EUR/USD/GBP/AED/MUR)
+  ---
+  duration_ms: 1.982713
+  type: 'test'
+  ...
+# Subtest: amount input: TND scale 3
+ok 2 - amount input: TND scale 3
+  ---
+  duration_ms: 0.233175
+  type: 'test'
+  ...
+# Subtest: amount input: scale 0 accepts integers only
+ok 3 - amount input: scale 0 accepts integers only
+  ---
+  duration_ms: 0.105353
+  type: 'test'
+  ...
+# Subtest: amount input: "," is always a decimal separator, never grouping
+ok 4 - amount input: "," is always a decimal separator, never grouping
+  ---
+  duration_ms: 16.733753
+  type: 'test'
+  ...
+# Subtest: amount input: invalid inputs
+ok 5 - amount input: invalid inputs
+  ---
+  duration_ms: 0.252837
+  type: 'test'
+  ...
+# Subtest: amount input: too large for the JSON-number transfer wire
+ok 6 - amount input: too large for the JSON-number transfer wire
+  ---
+  duration_ms: 0.1247
+  type: 'test'
+  ...
+# Subtest: amount input: rejects an invalid scale
+ok 7 - amount input: rejects an invalid scale
+  ---
+  duration_ms: 0.476855
+  type: 'test'
+  ...
+# Subtest: compareMinor: exact, string-based
+ok 8 - compareMinor: exact, string-based
+  ---
+  duration_ms: 0.217295
+  type: 'test'
+  ...
+# Subtest: minorToSafeNumber: exact integers only
+ok 9 - minorToSafeNumber: exact integers only
+  ---
+  duration_ms: 0.45642
+  type: 'test'
+  ...
+# Subtest: query params are encoded; undefined and null are skipped
+ok 10 - query params are encoded; undefined and null are skipped
+  ---
+  duration_ms: 1.713119
+  type: 'test'
+  ...
+# Subtest: GET sends bearer token and query, no body; POST sends JSON body ({} by default)
+ok 11 - GET sends bearer token and query, no body; POST sends JSON body ({} by default)
+  ---
+  duration_ms: 31.063897
+  type: 'test'
+  ...
+# Subtest: 401 => one refresh + retry with the new token, then success
+ok 12 - 401 => one refresh + retry with the new token, then success
+  ---
+  duration_ms: 0.970398
+  type: 'test'
+  ...
+# Subtest: 401 twice => session expiry after exactly one retry (also for POST)
+ok 13 - 401 twice => session expiry after exactly one retry (also for POST)
+  ---
+  duration_ms: 0.843258
+  type: 'test'
+  ...
+# Subtest: 401 with no refresh possible => immediate expiry, no retry
+ok 14 - 401 with no refresh possible => immediate expiry, no retry
+  ---
+  duration_ms: 0.483343
+  type: 'test'
+  ...
+# Subtest: non-2xx => typed ApiError with status, endpoint (no query) and body text; never retried
+ok 15 - non-2xx => typed ApiError with status, endpoint (no query) and body text; never retried
+  ---
+  duration_ms: 1.381311
+  type: 'test'
+  ...
+# Subtest: network failure => networkError, and a POST is not retried
+ok 16 - network failure => networkError, and a POST is not retried
+  ---
+  duration_ms: 0.31607
+  type: 'test'
+  ...
+# Subtest: an old-account response cannot complete after sign-out and cannot expire the new account
+ok 17 - an old-account response cannot complete after sign-out and cannot expire the new account
+  ---
+  duration_ms: 13.577344
+  type: 'test'
+  ...
+# Subtest: logout during token refresh prevents the old account from sending a request
+ok 18 - logout during token refresh prevents the old account from sending a request
+  ---
+  duration_ms: 0.693693
+  type: 'test'
+  ...
+# Subtest: timeout aborts the request via AbortController => networkError
+ok 19 - timeout aborts the request via AbortController => networkError
+  ---
+  duration_ms: 20.803791
+  type: 'test'
+  ...
+# Subtest: an invalid JSON success body => unexpectedError
+ok 20 - an invalid JSON success body => unexpectedError
+  ---
+  duration_ms: 0.750192
+  type: 'test'
+  ...
+# Subtest: cold start: preference on + stored session => locked before anything is restored
+ok 21 - cold start: preference on + stored session => locked before anything is restored
+  ---
+  duration_ms: 2.501347
+  type: 'test'
+  ...
+# Subtest: cold start: no stored session or preference off => no lock
+ok 22 - cold start: no stored session or preference off => no lock
+  ---
+  duration_ms: 0.245044
+  type: 'test'
+  ...
+# Subtest: cold start: each lock is a new state object (auto-prompt once per lock)
+ok 23 - cold start: each lock is a new state object (auto-prompt once per lock)
+  ---
+  duration_ms: 0.198648
+  type: 'test'
+  ...
+# Subtest: background shorter than the timeout => stays unlocked
+ok 24 - background shorter than the timeout => stays unlocked
+  ---
+  duration_ms: 0.139363
+  type: 'test'
+  ...
+# Subtest: background for the timeout or longer => locked
+ok 25 - background for the timeout or longer => locked
+  ---
+  duration_ms: 0.237009
+  type: 'test'
+  ...
+# Subtest: the first background timestamp counts when several arrive
+ok 26 - the first background timestamp counts when several arrive
+  ---
+  duration_ms: 0.127797
+  type: 'test'
+  ...
+# Subtest: a clock that went backwards locks (fail-safe)
+ok 27 - a clock that went backwards locks (fail-safe)
+  ---
+  duration_ms: 0.207332
+  type: 'test'
+  ...
+# Subtest: the app's own prompts and the Keycloak tab do not start the timer
+ok 28 - the app's own prompts and the Keycloak tab do not start the timer
+  ---
+  duration_ms: 0.157963
+  type: 'test'
+  ...
+# Subtest: an own prompt that ended in the background starts the timer from that moment
+ok 29 - an own prompt that ended in the background starts the timer from that moment
+  ---
+  duration_ms: 0.347106
+  type: 'test'
+  ...
+# Subtest: timeout 0 locks on every return from the background
+ok 30 - timeout 0 locks on every return from the background
+  ---
+  duration_ms: 0.485816
+  type: 'test'
+  ...
+# Subtest: success unlocks
+ok 31 - success unlocks
+  ---
+  duration_ms: 0.181724
+  type: 'test'
+  ...
+# Subtest: cancel stays locked with a notice and is not counted as a failure
+ok 32 - cancel stays locked with a notice and is not counted as a failure
+  ---
+  duration_ms: 0.216963
+  type: 'test'
+  ...
+# Subtest: 3 failed attempts => Keycloak login required (preference kept)
+ok 33 - 3 failed attempts => Keycloak login required (preference kept)
+  ---
+  duration_ms: 0.207293
+  type: 'test'
+  ...
+# Subtest: failures are counted across cancels
+ok 34 - failures are counted across cancels
+  ---
+  duration_ms: 0.118902
+  type: 'test'
+  ...
+# Subtest: any system lockout => Keycloak login required
+ok 35 - any system lockout => Keycloak login required
+  ---
+  duration_ms: 0.210994
+  type: 'test'
+  ...
+# Subtest: biometrics changed (Keystore key invalidated) => unlock off + Keycloak login
+ok 36 - biometrics changed (Keystore key invalidated) => unlock off + Keycloak login
+  ---
+  duration_ms: 0.120513
+  type: 'test'
+  ...
+# Subtest: biometrics / screen lock removed => unlock off + Keycloak login
+ok 37 - biometrics / screen lock removed => unlock off + Keycloak login
+  ---
+  duration_ms: 0.110916
+  type: 'test'
+  ...
+# Subtest: login required is terminal until the user leaves it (sign-out / password path)
+ok 38 - login required is terminal until the user leaves it (sign-out / password path)
+  ---
+  duration_ms: 0.145586
+  type: 'test'
+  ...
+# Subtest: a session change while locked never unlocks
+ok 39 - a session change while locked never unlocks
+  ---
+  duration_ms: 0.095928
+  type: 'test'
+  ...
+# Subtest: disabled preference: no lock on background/foreground
+ok 40 - disabled preference: no lock on background/foreground
+  ---
+  duration_ms: 0.102485
+  type: 'test'
+  ...
+# Subtest: turning unlock on/off
+ok 41 - turning unlock on/off
+  ---
+  duration_ms: 0.118378
+  type: 'test'
+  ...
+# Subtest: turning unlock off never unlocks a locked app
+ok 42 - turning unlock off never unlocks a locked app
+  ---
+  duration_ms: 0.099738
+  type: 'test'
+  ...
+# Subtest: sign-in by the user who enabled unlock re-arms it; session loss turns it off
+ok 43 - sign-in by the user who enabled unlock re-arms it; session loss turns it off
+  ---
+  duration_ms: 0.121665
+  type: 'test'
+  ...
+# Subtest: sign-out clears any lock state
+ok 44 - sign-out clears any lock state
+  ---
+  duration_ms: 0.119252
+  type: 'test'
+  ...
+# Subtest: unlocking does not create any "recently authenticated" state for transfers
+ok 45 - unlocking does not create any "recently authenticated" state for transfers
+  ---
+  duration_ms: 0.13999
+  type: 'test'
+  ...
+# Subtest: secure-store prompt errors are classified from their message text
+ok 46 - secure-store prompt errors are classified from their message text
+  ---
+  duration_ms: 0.362413
+  type: 'test'
+  ...
+# Subtest: local-authentication error codes
+ok 47 - local-authentication error codes
+  ---
+  duration_ms: 0.197721
+  type: 'test'
+  ...
+# Subtest: settings: missing, malformed or unreadable => off
+ok 48 - settings: missing, malformed or unreadable => off
+  ---
+  duration_ms: 0.543651
+  type: 'test'
+  ...
+# Subtest: settings: bound to the subject that enabled them
+ok 49 - settings: bound to the subject that enabled them
+  ---
+  duration_ms: 0.297802
+  type: 'test'
+  ...
+# Subtest: offer: once per user, only when the device has a method, not when already on
+ok 50 - offer: once per user, only when the device has a method, not when already on
+  ---
+  duration_ms: 0.159529
+  type: 'test'
+  ...
+# Subtest: own prompts suppress auto-lock until they end, then notify
+ok 51 - own prompts suppress auto-lock until they end, then notify
+  ---
+  duration_ms: 0.575687
+  type: 'test'
+  ...
+# Subtest: lock timeout: default 60 s, overridable, invalid values rejected
+ok 52 - lock timeout: default 60 s, overridable, invalid values rejected
+  ---
+  duration_ms: 0.761284
+  type: 'test'
+  ...
+# Subtest: nothing is mocked when the env var is unset or "none", in dev and non-dev
+ok 53 - nothing is mocked when the env var is unset or "none", in dev and non-dev
+  ---
+  duration_ms: 1.81176
+  type: 'test'
+  ...
+# Subtest: "all" mocks every feature, in dev only
+ok 54 - "all" mocks every feature, in dev only
+  ---
+  duration_ms: 0.947621
+  type: 'test'
+  ...
+# Subtest: non-dev ALWAYS has an empty mock set, whatever the env says
+ok 55 - non-dev ALWAYS has an empty mock set, whatever the env says
+  ---
+  duration_ms: 0.290838
+  type: 'test'
+  ...
+# Subtest: a list selects exactly those features; whitespace, case and duplicates are tolerated
+ok 56 - a list selects exactly those features; whitespace, case and duplicates are tolerated
+  ---
+  duration_ms: 0.766708
+  type: 'test'
+  ...
+# Subtest: unknown names are rejected in dev with a clear error naming them
+ok 57 - unknown names are rejected in dev with a clear error naming them
+  ---
+  duration_ms: 0.458576
+  type: 'test'
+  ...
+# Subtest: mocking auth requires mocking every backend-calling feature
+ok 58 - mocking auth requires mocking every backend-calling feature
+  ---
+  duration_ms: 0.379015
+  type: 'test'
+  ...
+# Subtest: a mocked KYC start requires a mocked Sumsub session (no real SDK on a fake applicant)
+ok 59 - a mocked KYC start requires a mocked Sumsub session (no real SDK on a fake applicant)
+  ---
+  duration_ms: 0.266238
+  type: 'test'
+  ...
+# Subtest: real auth with mocked downstream features is allowed (feature-by-feature development)
+ok 60 - real auth with mocked downstream features is allowed (feature-by-feature development)
+  ---
+  duration_ms: 0.247003
+  type: 'test'
+  ...
+# Subtest: non-dev rejects http:// apiUrl and issuer
+ok 61 - non-dev rejects http:// apiUrl and issuer
+  ---
+  duration_ms: 0.529146
+  type: 'test'
+  ...
+# Subtest: non-dev rejects missing required values
+ok 62 - non-dev rejects missing required values
+  ---
+  duration_ms: 0.647897
+  type: 'test'
+  ...
+# Subtest: non-dev rejects REPLACE_ME placeholders anywhere in config
+ok 63 - non-dev rejects REPLACE_ME placeholders anywhere in config
+  ---
+  duration_ms: 0.368012
+  type: 'test'
+  ...
+# Subtest: non-dev accepts a fully valid https config
+ok 64 - non-dev accepts a fully valid https config
+  ---
+  duration_ms: 0.172915
+  type: 'test'
+  ...
+# Subtest: dev accepts localhost http defaults when nothing is set
+ok 65 - dev accepts localhost http defaults when nothing is set
+  ---
+  duration_ms: 0.138898
+  type: 'test'
+  ...
+# Subtest: logout clear waits for an in-flight write and precedes the next account write
+ok 66 - logout clear waits for an in-flight write and precedes the next account write
+  ---
+  duration_ms: 1.92659
+  type: 'test'
+  ...
+# Subtest: a failed old write cannot prevent logout cleanup
+ok 67 - a failed old write cannot prevent logout cleanup
+  ---
+  duration_ms: 0.601281
+  type: 'test'
+  ...
+# Subtest: given_name from the ID token
+ok 68 - given_name from the ID token
+  ---
+  duration_ms: 2.153122
+  type: 'test'
+  ...
+# Subtest: missing, blank or malformed tokens give no name
+ok 69 - missing, blank or malformed tokens give no name
+  ---
+  duration_ms: 0.628298
+  type: 'test'
+  ...
+# Subtest: greeting: first name, else email local part, never the full email
+ok 70 - greeting: first name, else email local part, never the full email
+  ---
+  duration_ms: 0.323736
+  type: 'test'
+  ...
+# Subtest: groupByDay: today, yesterday, older; keeps server order and merges split days
+ok 71 - groupByDay: today, yesterday, older; keeps server order and merges split days
+  ---
+  duration_ms: 2.398774
+  type: 'test'
+  ...
+# Subtest: groupByDay: empty list and unparseable timestamps
+ok 72 - groupByDay: empty list and unparseable timestamps
+  ---
+  duration_ms: 0.409074
+  type: 'test'
+  ...
+# Subtest: formatDay: year only when it differs from the current year
+ok 73 - formatDay: year only when it differs from the current year
+  ---
+  duration_ms: 53.491915
+  type: 'test'
+  ...
+# Subtest: splitAmount: minor units split off, string otherwise unchanged
+ok 74 - splitAmount: minor units split off, string otherwise unchanged
+  ---
+  duration_ms: 6.508005
+  type: 'test'
+  ...
+# Subtest: initials and shortId
+ok 75 - initials and shortId
+  ---
+  duration_ms: 0.670348
+  type: 'test'
+  ...
+# Subtest: parseFxQuote keeps amounts as strings with their own scale (TND = 3)
+ok 76 - parseFxQuote keeps amounts as strings with their own scale (TND = 3)
+  ---
+  duration_ms: 1.831948
+  type: 'test'
+  ...
+# Subtest: parseFxQuote rejects numbers for amounts, same currencies, bad dates and bad rates
+ok 77 - parseFxQuote rejects numbers for amounts, same currencies, bad dates and bad rates
+  ---
+  duration_ms: 1.033903
+  type: 'test'
+  ...
+# Subtest: parseFxConversion accepts unresolved and rejected states, null transaction ids
+ok 78 - parseFxConversion accepts unresolved and rejected states, null transaction ids
+  ---
+  duration_ms: 0.408685
+  type: 'test'
+  ...
+# Subtest: history accepts CONVERSION items (backend fix BUG-FX-1)
+ok 79 - history accepts CONVERSION items (backend fix BUG-FX-1)
+  ---
+  duration_ms: 0.346706
+  type: 'test'
+  ...
+# Subtest: quote deadline counts the server lifetime from the send moment, minus a margin
+ok 80 - quote deadline counts the server lifetime from the send moment, minus a margin
+  ---
+  duration_ms: 0.435642
+  type: 'test'
+  ...
+# Subtest: a quote with an unusable lifetime is expired immediately
+ok 81 - a quote with an unusable lifetime is expired immediately
+  ---
+  duration_ms: 0.186507
+  type: 'test'
+  ...
+# Subtest: quote failures: 503/404 unavailable, 422 out of range, network
+ok 82 - quote failures: 503/404 unavailable, 422 out of range, network
+  ---
+  duration_ms: 0.47468
+  type: 'test'
+  ...
+# Subtest: conversion failures: only provably-nothing-moved statuses are rejections
+ok 83 - conversion failures: only provably-nothing-moved statuses are rejections
+  ---
+  duration_ms: 1.205046
+  type: 'test'
+  ...
+# Subtest: requestQuote sends a new key every time and records the send moment
+ok 84 - requestQuote sends a new key every time and records the send moment
+  ---
+  duration_ms: 0.95219
+  type: 'test'
+  ...
+# Subtest: requestQuote maps a disabled backend (503) to unavailable
+ok 85 - requestQuote maps a disabled backend (503) to unavailable
+  ---
+  duration_ms: 0.742701
+  type: 'test'
+  ...
+# Subtest: submit: persisted before the POST, success clears it
+ok 86 - submit: persisted before the POST, success clears it
+  ---
+  duration_ms: 1.243746
+  type: 'test'
+  ...
+# Subtest: submit never sends an expired quote
+ok 87 - submit never sends an expired quote
+  ---
+  duration_ms: 0.424688
+  type: 'test'
+  ...
+# Subtest: uncertain outcomes (409, 503, timeout) keep the pending conversion and send nothing more
+ok 88 - uncertain outcomes (409, 503, timeout) keep the pending conversion and send nothing more
+  ---
+  duration_ms: 0.948213
+  type: 'test'
+  ...
+# Subtest: retry resends the SAME key and quote; a replayed success resolves it
+ok 89 - retry resends the SAME key and quote; a replayed success resolves it
+  ---
+  duration_ms: 0.538887
+  type: 'test'
+  ...
+# Subtest: definitive rejections (404 off, 422 funds) clear the pending conversion
+ok 90 - definitive rejections (404 off, 422 funds) clear the pending conversion
+  ---
+  duration_ms: 0.680122
+  type: 'test'
+  ...
+# Subtest: check: SUCCEEDED and REJECTED are final, unfinished stays uncertain
+ok 91 - check: SUCCEEDED and REJECTED are final, unfinished stays uncertain
+  ---
+  duration_ms: 1.453178
+  type: 'test'
+  ...
+# Subtest: check: 404 is not proof, a missing endpoint is "check unavailable"
+ok 92 - check: 404 is not proof, a missing endpoint is "check unavailable"
+  ---
+  duration_ms: 2.692544
+  type: 'test'
+  ...
+# Subtest: stop tracking only after a manual check; a second conversion waits for the first
+ok 93 - stop tracking only after a manual check; a second conversion waits for the first
+  ---
+  duration_ms: 0.713812
+  type: 'test'
+  ...
+# Subtest: loadPage: keeps fetching through empty pages while hasMore is true
+ok 94 - loadPage: keeps fetching through empty pages while hasMore is true
+  ---
+  duration_ms: 2.283376
+  type: 'test'
+  ...
+# Subtest: loadPage: bounded number of empty hops, then hands back with hasMore still true
+ok 95 - loadPage: bounded number of empty hops, then hands back with hasMore still true
+  ---
+  duration_ms: 0.363278
+  type: 'test'
+  ...
+# Subtest: loadPage: empty history; hasMore without a cursor is treated as the end
+ok 96 - loadPage: empty history; hasMore without a cursor is treated as the end
+  ---
+  duration_ms: 0.295316
+  type: 'test'
+  ...
+# Subtest: loadPage: keeps server order (no re-sorting)
+ok 97 - loadPage: keeps server order (no re-sorting)
+  ---
+  duration_ms: 0.239085
+  type: 'test'
+  ...
+# Subtest: recentItems: first 3 across pages, including empty ones; exhausted only at the real end
+ok 98 - recentItems: first 3 across pages, including empty ones; exhausted only at the real end
+  ---
+  duration_ms: 4.322518
+  type: 'test'
+  ...
+# Subtest: findByReference: pages at 100, stops when found, reports exhausted vs budget
+ok 99 - findByReference: pages at 100, stops when found, reports exhausted vs budget
+  ---
+  duration_ms: 0.700206
+  type: 'test'
+  ...
+# Subtest: parseTransactionPage: shape checks
+ok 100 - parseTransactionPage: shape checks
+  ---
+  duration_ms: 3.838944
+  type: 'test'
+  ...
+# Subtest: parseTransfer / parseRecipientLookup / errorCodeFrom
+ok 101 - parseTransfer / parseRecipientLookup / errorCodeFrom
+  ---
+  duration_ms: 0.491278
+  type: 'test'
+  ...
+# Subtest: transaction view: titles, sign from direction, REVERSED
+ok 102 - transaction view: titles, sign from direction, REVERSED
+  ---
+  duration_ms: 28.43984
+  type: 'test'
+  ...
+# Subtest: complete lifecycle persists and can be reset for another meeting
+ok 103 - complete lifecycle persists and can be reset for another meeting
+  ---
+  duration_ms: 19.711105
+  type: 'test'
+  ...
+# Subtest: pending, rejected and more-info states never activate the account
+ok 104 - pending, rejected and more-info states never activate the account
+  ---
+  duration_ms: 21.755583
+  type: 'test'
+  ...
+# Subtest: network failure preserves progress and retry succeeds
+ok 105 - network failure preserves progress and retry succeeds
+  ---
+  duration_ms: 5.127262
+  type: 'test'
+  ...
+# Subtest: expired sessions cannot perform authenticated operations
+ok 106 - expired sessions cannot perform authenticated operations
+  ---
+  duration_ms: 3.402112
+  type: 'test'
+  ...
+# Subtest: backend restrictions take priority over approved KYC and local acknowledgements
+ok 107 - backend restrictions take priority over approved KYC and local acknowledgements
+  ---
+  duration_ms: 0.348629
+  type: 'test'
+  ...
+# Subtest: optional phone and back routes follow the actual onboarding contract
+ok 108 - optional phone and back routes follow the actual onboarding contract
+  ---
+  duration_ms: 0.400322
+  type: 'test'
+  ...
+# Subtest: verification cannot bypass onboarding
+ok 109 - verification cannot bypass onboarding
+  ---
+  duration_ms: 12.675186
+  type: 'test'
+  ...
+# Subtest: a stalled identity-provider request returns a retryable network error
+ok 110 - a stalled identity-provider request returns a retryable network error
+  ---
+  duration_ms: 5.101572
+  type: 'test'
+  ...
+# Subtest: signup stores entered email across onboarding, verification and restart, never passwords
+ok 111 - signup stores entered email across onboarding, verification and restart, never passwords
+  ---
+  duration_ms: 6.013013
+  type: 'test'
+  ...
+# Subtest: signout retains account lifecycle, sign-in resumes it, and another email never inherits it
+ok 112 - signout retains account lifecycle, sign-in resumes it, and another email never inherits it
+  ---
+  duration_ms: 8.485583
+  type: 'test'
+  ...
+# Subtest: reset removes custom email and restores exact fallback only for internal seed authentication
+ok 113 - reset removes custom email and restores exact fallback only for internal seed authentication
+  ---
+  duration_ms: 4.759481
+  type: 'test'
+  ...
+# Subtest: legacy identity migrates to fallback; restricted and review states survive sign-in
+ok 114 - legacy identity migrates to fallback; restricted and review states survive sign-in
+  ---
+  duration_ms: 10.199291
+  type: 'test'
+  ...
+# Subtest: both auth forms validate before persisting; signup requires matching passwords
+ok 115 - both auth forms validate before persisting; signup requires matching passwords
+  ---
+  duration_ms: 5.033462
+  type: 'test'
+  ...
+# Subtest: every PR \#61 / \#64 errorCode maps to a specific failure
+ok 116 - every PR \#61 / \#64 errorCode maps to a specific failure
+  ---
+  duration_ms: 3.439302
+  type: 'test'
+  ...
+# Subtest: 503 SUMSUB_UNAVAILABLE shows "temporarily unavailable" + Try again, no routing
+ok 117 - 503 SUMSUB_UNAVAILABLE shows "temporarily unavailable" + Try again, no routing
+  ---
+  duration_ms: 1.296882
+  type: 'test'
+  ...
+# Subtest: unknown errorCode: 5xx => unavailable, 4xx => generic
+ok 118 - unknown errorCode: 5xx => unavailable, 4xx => generic
+  ---
+  duration_ms: 0.257258
+  type: 'test'
+  ...
+# Subtest: without errorCode the status decides
+ok 119 - without errorCode the status decides
+  ---
+  duration_ms: 0.223471
+  type: 'test'
+  ...
+# Subtest: coded failures resolve without guessing
+ok 120 - coded failures resolve without guessing
+  ---
+  duration_ms: 0.375625
+  type: 'test'
+  ...
+# Subtest: uncoded 409/403 are disambiguated with GET /api/profile
+ok 121 - uncoded 409/403 are disambiguated with GET /api/profile
+  ---
+  duration_ms: 0.502908
+  type: 'test'
+  ...
+# Subtest: only failures that need the status trigger a GET /api/profile
+ok 122 - only failures that need the status trigger a GET /api/profile
+  ---
+  duration_ms: 0.244184
+  type: 'test'
+  ...
+# Subtest: polling backs off 5 s → 10 s → 20 s → 30 s → 60 s and stops after 15 minutes
+ok 123 - polling backs off 5 s → 10 s → 20 s → 30 s → 60 s and stops after 15 minutes
+  ---
+  duration_ms: 1.652211
+  type: 'test'
+  ...
+# Subtest: polling is stoppable, restartable, and survives failing ticks
+ok 124 - polling is stoppable, restartable, and survives failing ticks
+  ---
+  duration_ms: 0.773392
+  type: 'test'
+  ...
+# Subtest: xhr transport resolves without timers and reports network/timeout/abort
+ok 125 - xhr transport resolves without timers and reports network/timeout/abort
+  ---
+  duration_ms: 1.986058
+  type: 'test'
+  ...
+# Subtest: renewal client over xhr keeps 401 => refresh => retry once; second 401 => expiry
+ok 126 - renewal client over xhr keeps 401 => refresh => retry once; second 401 => expiry
+  ---
+  duration_ms: 2.559181
+  type: 'test'
+  ...
+# Subtest: SDK results map to submitted/incomplete/failed and never read errorMsg
+ok 127 - SDK results map to submitted/incomplete/failed and never read errorMsg
+  ---
+  duration_ms: 0.356624
+  type: 'test'
+  ...
+# Subtest: registry: kycCapture is real (Sumsub SDK); its mock exists only for development
+ok 128 - registry: kycCapture is real (Sumsub SDK); its mock exists only for development
+  ---
+  duration_ms: 0.322993
+  type: 'test'
+  ...
+# Subtest: end-session uses the discovered endpoint and validated callback, without a token in the URL
+ok 129 - end-session uses the discovered endpoint and validated callback, without a token in the URL
+  ---
+  duration_ms: 1.145458
+  type: 'test'
+  ...
+# Subtest: browser cancel, browser failure, and missing discovery leave local logout complete
+ok 130 - browser cancel, browser failure, and missing discovery leave local logout complete
+  ---
+  duration_ms: 0.363269
+  type: 'test'
+  ...
+# Subtest: composition: each feature is mocked or real strictly according to the mock set
+ok 131 - composition: each feature is mocked or real strictly according to the mock set
+  ---
+  duration_ms: 1.485268
+  type: 'test'
+  ...
+# Subtest: composition: empty set is all real, full set is all mock, no mock bundle returns real
+ok 132 - composition: empty set is all real, full set is all mock, no mock bundle returns real
+  ---
+  duration_ms: 0.2879
+  type: 'test'
+  ...
+# Subtest: composition: transfers and history are never mocked; with mocked auth they are unavailable
+ok 133 - composition: transfers and history are never mocked; with mocked auth they are unavailable
+  ---
+  duration_ms: 1.095087
+  type: 'test'
+  ...
+# Subtest: mock wallets match the GET /api/wallets contract; notifications match GET /api/notifications; capture keeps its demo values
+ok 134 - mock wallets match the GET /api/wallets contract; notifications match GET /api/notifications; capture keeps its demo values
+  ---
+  duration_ms: 11.015399
+  type: 'test'
+  ...
+# Subtest: real auth + mocked kyc: kyc mock works on the shared session and never persists demo state
+ok 135 - real auth + mocked kyc: kyc mock works on the shared session and never persists demo state
+  ---
+  duration_ms: 14.214472
+  type: 'test'
+  ...
+# Subtest: registry: exactly one entry per mockable feature, each with a unique marker in its module
+ok 136 - registry: exactly one entry per mockable feature, each with a unique marker in its module
+  ---
+  duration_ms: 0.616717
+  type: 'test'
+  ...
+# Subtest: registry: no unregistered marker exists anywhere in src/mocks
+ok 137 - registry: no unregistered marker exists anywhere in src/mocks
+  ---
+  duration_ms: 0.494365
+  type: 'test'
+  ...
+# Subtest: scale table covers the 6 backend currencies, TND = 3, the API scale wins
+ok 138 - scale table covers the 6 backend currencies, TND = 3, the API scale wins
+  ---
+  duration_ms: 2.61826
+  type: 'test'
+  ...
+# Subtest: every currency and scale matches Intl exactly in en and fr (safe values)
+ok 139 - every currency and scale matches Intl exactly in en and fr (safe values)
+  ---
+  duration_ms: 32.173246
+  type: 'test'
+  ...
+# Subtest: explicit expectations: en and fr separators, TND 3 decimals, sign
+ok 140 - explicit expectations: en and fr separators, TND 3 decimals, sign
+  ---
+  duration_ms: 0.280157
+  type: 'test'
+  ...
+# Subtest: values above 2^53 stay exact (string path, no Number conversion)
+ok 141 - values above 2^53 stay exact (string path, no Number conversion)
+  ---
+  duration_ms: 0.274243
+  type: 'test'
+  ...
+# Subtest: the scale sent by the API overrides the table
+ok 142 - the scale sent by the API overrides the table
+  ---
+  duration_ms: 0.544244
+  type: 'test'
+  ...
+# Subtest: invalid amounts are rejected explicitly, never rendered
+ok 143 - invalid amounts are rejected explicitly, never rendered
+  ---
+  duration_ms: 0.712099
+  type: 'test'
+  ...
+# Subtest: helpers: parseMinor, isZeroMinor, toDecimalString, plain fallback
+ok 144 - helpers: parseMinor, isZeroMinor, toDecimalString, plain fallback
+  ---
+  duration_ms: 0.308314
+  type: 'test'
+  ...
+# Subtest: compareInstants orders exactly, including microseconds Date.parse would drop
+ok 145 - compareInstants orders exactly, including microseconds Date.parse would drop
+  ---
+  duration_ms: 1.64389
+  type: 'test'
+  ...
+# Subtest: first use: everything already in the feed counts as read (no badge burst)
+ok 146 - first use: everything already in the feed counts as read (no badge burst)
+  ---
+  duration_ms: 0.490316
+  type: 'test'
+  ...
+# Subtest: markRead marks one item, is idempotent, and keeps at most 500 ids, newest first
+ok 147 - markRead marks one item, is idempotent, and keeps at most 500 ids, newest first
+  ---
+  duration_ms: 16.355653
+  type: 'test'
+  ...
+# Subtest: markAllRead moves the watermark forward only and drops ids it now covers
+ok 148 - markAllRead moves the watermark forward only and drops ids it now covers
+  ---
+  duration_ms: 1.376798
+  type: 'test'
+  ...
+# Subtest: parseReadState rejects anything unexpected (caller re-initialises)
+ok 149 - parseReadState rejects anything unexpected (caller re-initialises)
+  ---
+  duration_ms: 0.409598
+  type: 'test'
+  ...
+# Subtest: store: per-user state survives a restart (new store, same persistence)
+ok 150 - store: per-user state survives a restart (new store, same persistence)
+  ---
+  duration_ms: 0.554493
+  type: 'test'
+  ...
+# Subtest: store: users never share read state
+ok 151 - store: users never share read state
+  ---
+  duration_ms: 0.300815
+  type: 'test'
+  ...
+# Subtest: store: clear() (sign-out) forgets every user in memory and on disk, and notifies
+ok 152 - store: clear() (sign-out) forgets every user in memory and on disk, and notifies
+  ---
+  duration_ms: 0.486217
+  type: 'test'
+  ...
+# Subtest: store: storage failures never break the feed (state kept in memory)
+ok 153 - store: storage failures never break the feed (state kept in memory)
+  ---
+  duration_ms: 0.465182
+  type: 'test'
+  ...
+# Subtest: store: a corrupt saved file re-initialises from the next page
+ok 154 - store: a corrupt saved file re-initialises from the next page
+  ---
+  duration_ms: 0.559974
+  type: 'test'
+  ...
+# Subtest: parseNotificationPage keeps valid items, drops unknown types and currencies
+ok 155 - parseNotificationPage keeps valid items, drops unknown types and currencies
+  ---
+  duration_ms: 0.5141
+  type: 'test'
+  ...
+# Subtest: parseNotificationPage rejects malformed items and pages
+ok 156 - parseNotificationPage rejects malformed items and pages
+  ---
+  duration_ms: 0.882788
+  type: 'test'
+  ...
+# Subtest: parseNotificationPage treats hasMore without a cursor as the end
+ok 157 - parseNotificationPage treats hasMore without a cursor as the end
+  ---
+  duration_ms: 0.136984
+  type: 'test'
+  ...
+# Subtest: titles: a test credit never reads like a real payment (EMAIL-2)
+ok 158 - titles: a test credit never reads like a real payment (EMAIL-2)
+  ---
+  duration_ms: 29.49816
+  type: 'test'
+  ...
+# Subtest: amounts use the currency scale and the direction sign
+ok 159 - amounts use the currency scale and the direction sign
+  ---
+  duration_ms: 0.87931
+  type: 'test'
+  ...
+# Subtest: badge text: hidden at zero, "9+" above nine
+ok 160 - badge text: hidden at zero, "9+" above nine
+  ---
+  duration_ms: 0.168728
+  type: 'test'
+  ...
+# Subtest: findByTransactionId follows pages (including empty ones) and is bounded
+ok 161 - findByTransactionId follows pages (including empty ones) and is bounded
+  ---
+  duration_ms: 2.646857
+  type: 'test'
+  ...
+# Subtest: sign-out runs the cleanup first, and a failing cleanup never blocks it
+ok 162 - sign-out runs the cleanup first, and a failing cleanup never blocks it
+  ---
+  duration_ms: 0.435003
+  type: 'test'
+  ...
+# Subtest: mock feed pages newest first with an opaque cursor
+ok 163 - mock feed pages newest first with an opaque cursor
+  ---
+  duration_ms: 0.359752
+  type: 'test'
+  ...
+# Subtest: every backend KYC status maps; RESUBMISSION_REQUIRED -> more info, IN_REVIEW = PENDING
+ok 164 - every backend KYC status maps; RESUBMISSION_REQUIRED -> more info, IN_REVIEW = PENDING
+  ---
+  duration_ms: 0.842882
+  type: 'test'
+  ...
+# Subtest: routing for all KYC x account combinations uses the real account status
+ok 165 - routing for all KYC x account combinations uses the real account status
+  ---
+  duration_ms: 1.21223
+  type: 'test'
+  ...
+# Subtest: SUSPENDED + APPROVED is restricted (valid backend combination), CLOSED too
+ok 166 - SUSPENDED + APPROVED is restricted (valid backend combination), CLOSED too
+  ---
+  duration_ms: 0.202966
+  type: 'test'
+  ...
+# Subtest: 404 (not onboarded) => onboarding intro; customer details carry the own userId
+ok 167 - 404 (not onboarded) => onboarding intro; customer details carry the own userId
+  ---
+  duration_ms: 0.186358
+  type: 'test'
+  ...
+# Subtest: a conflict is gated before onboarding and a bare customer row does not prove completion
+ok 168 - a conflict is gated before onboarding and a bare customer row does not prove completion
+  ---
+  duration_ms: 0.220513
+  type: 'test'
+  ...
+# Subtest: bootstrap requires a recognized subject-scoped eligibility value
+ok 169 - bootstrap requires a recognized subject-scoped eligibility value
+  ---
+  duration_ms: 1.629115
+  type: 'test'
+  ...
+# Subtest: profile parser accepts the documented response and rejects unknown statuses/shapes
+ok 170 - profile parser accepts the documented response and rejects unknown statuses/shapes
+  ---
+  duration_ms: 0.969687
+  type: 'test'
+  ...
+# Subtest: escapeHtml escapes the five HTML-significant characters
+ok 171 - escapeHtml escapes the five HTML-significant characters
+  ---
+  duration_ms: 2.279077
+  type: 'test'
+  ...
+# Subtest: dynamic values are escaped: no script or markup injection via reference or emails
+ok 172 - dynamic values are escaped: no script or markup injection via reference or emails
+  ---
+  duration_ms: 21.658167
+  type: 'test'
+  ...
+# Subtest: the document blocks scripts and network loads with a CSP
+ok 173 - the document blocks scripts and network loads with a CSP
+  ---
+  duration_ms: 0.800575
+  type: 'test'
+  ...
+# Subtest: money uses the currency scale and the direction sign
+ok 174 - money uses the currency scale and the direction sign
+  ---
+  duration_ms: 1.750972
+  type: 'test'
+  ...
+# Subtest: REVERSED is clearly marked; COMPLETED is not
+ok 175 - REVERSED is clearly marked; COMPLETED is not
+  ---
+  duration_ms: 0.744867
+  type: 'test'
+  ...
+# Subtest: sandbox mark only in non-production builds
+ok 176 - sandbox mark only in non-production builds
+  ---
+  duration_ms: 0.635294
+  type: 'test'
+  ...
+# Subtest: header, footer, generation time, local + UTC date, ids
+ok 177 - header, footer, generation time, local + UTC date, ids
+  ---
+  duration_ms: 0.501496
+  type: 'test'
+  ...
+# Subtest: history receipts have no counterparty row; Send receipts show the masked recipient
+ok 178 - history receipts have no counterparty row; Send receipts show the masked recipient
+  ---
+  duration_ms: 0.711847
+  type: 'test'
+  ...
+# Subtest: account holder row is omitted when no email is known
+ok 179 - account holder row is omitted when no email is known
+  ---
+  duration_ms: 0.471368
+  type: 'test'
+  ...
+# Subtest: Send receipt: device confirmation time unless the ledger time is known
+ok 180 - Send receipt: device confirmation time unless the ledger time is known
+  ---
+  duration_ms: 0.761732
+  type: 'test'
+  ...
+# Subtest: no receipt for uncertain (pending) or rejected transfers
+ok 181 - no receipt for uncertain (pending) or rejected transfers
+  ---
+  duration_ms: 0.127162
+  type: 'test'
+  ...
+# Subtest: a confirmed transfer gets a receipt, REVERSED included
+ok 182 - a confirmed transfer gets a receipt, REVERSED included
+  ---
+  duration_ms: 0.607264
+  type: 'test'
+  ...
+# Subtest: withSumsub declares the ML Kit model union with tools:replace (manifest merger conflict)
+ok 183 - withSumsub declares the ML Kit model union with tools:replace (manifest merger conflict)
+  ---
+  duration_ms: 0.896463
+  type: 'test'
+  ...
+# Subtest: withSumsub adds the Sumsub Maven repository to allprojects only
+ok 184 - withSumsub adds the Sumsub Maven repository to allprojects only
+  ---
+  duration_ms: 0.300078
+  type: 'test'
+  ...
+# Subtest: withSumsub sets FLAG_SECURE on com.sumsub.* activities from MainApplication.onCreate
+ok 185 - withSumsub sets FLAG_SECURE on com.sumsub.* activities from MainApplication.onCreate
+  ---
+  duration_ms: 0.640539
+  type: 'test'
+  ...
+# Subtest: withSumsub is idempotent (prebuild without --clean runs it again)
+ok 186 - withSumsub is idempotent (prebuild without --clean runs it again)
+  ---
+  duration_ms: 0.098435
+  type: 'test'
+  ...
+# Subtest: withSumsub fails loudly when the anchor is missing
+ok 187 - withSumsub fails loudly when the anchor is missing
+  ---
+  duration_ms: 0.163696
+  type: 'test'
+  ...
+# Subtest: parseKycSdkToken accepts the documented shape and keeps the server TTL
+ok 188 - parseKycSdkToken accepts the documented shape and keeps the server TTL
+  ---
+  duration_ms: 0.607457
+  type: 'test'
+  ...
+# Subtest: parseKycSdkToken rejects malformed bodies without echoing the token
+ok 189 - parseKycSdkToken rejects malformed bodies without echoing the token
+  ---
+  duration_ms: 0.334415
+  type: 'test'
+  ...
+# Subtest: reference: "NEOS-" + first 8 characters of the user ID, upper case
+ok 190 - reference: "NEOS-" + first 8 characters of the user ID, upper case
+  ---
+  duration_ms: 3.09551
+  type: 'test'
+  ...
+# Subtest: reference: no usable user ID gives no reference (never a made-up one)
+ok 191 - reference: no usable user ID gives no reference (never a made-up one)
+  ---
+  duration_ms: 0.32973
+  type: 'test'
+  ...
+# Subtest: instructions: fixed sandbox bank details for every currency, only the reference is per user
+ok 192 - instructions: fixed sandbox bank details for every currency, only the reference is per user
+  ---
+  duration_ms: 1.552706
+  type: 'test'
+  ...
+# Subtest: account number is obviously fake: no real country code and it fails the IBAN check
+ok 193 - account number is obviously fake: no real country code and it fails the IBAN check
+  ---
+  duration_ms: 0.513418
+  type: 'test'
+  ...
+# Subtest: availability: same signal as Convert (sandbox build with a real session only)
+ok 194 - availability: same signal as Convert (sandbox build with a real session only)
+  ---
+  duration_ms: 0.257323
+  type: 'test'
+  ...
+# Subtest: the preview never calls a service, credits or creates a transaction
+ok 195 - the preview never calls a service, credits or creates a transaction
+  ---
+  duration_ms: 0.37183
+  type: 'test'
+  ...
+# Subtest: release readiness: Add money is a sandbox-only preview, nothing left unimplemented
+ok 196 - release readiness: Add money is a sandbox-only preview, nothing left unimplemented
+  ---
+  duration_ms: 0.325455
+  type: 'test'
+  ...
+# Subtest: reference: internal_transfer:ct_<sender no dashes>_<key no dashes>, lowercase
+ok 197 - reference: internal_transfer:ct_<sender no dashes>_<key no dashes>, lowercase
+  ---
+  duration_ms: 1.215166
+  type: 'test'
+  ...
+# Subtest: classify: each HTTP case
+ok 198 - classify: each HTTP case
+  ---
+  duration_ms: 0.944628
+  type: 'test'
+  ...
+# Subtest: classify: future errorCode bodies
+ok 199 - classify: future errorCode bodies
+  ---
+  duration_ms: 0.27484
+  type: 'test'
+  ...
+# Subtest: 200: success, request on the wire, pending persisted before the POST and cleared after
+ok 200 - 200: success, request on the wire, pending persisted before the POST and cleared after
+  ---
+  duration_ms: 1.486594
+  type: 'test'
+  ...
+# Subtest: prepare: same intent keeps the key; any changed field gives a new key
+ok 201 - prepare: same intent keeps the key; any changed field gives a new key
+  ---
+  duration_ms: 0.383591
+  type: 'test'
+  ...
+# Subtest: a Review that is never confirmed persists nothing
+ok 202 - a Review that is never confirmed persists nothing
+  ---
+  duration_ms: 0.16224
+  type: 'test'
+  ...
+# Subtest: storage failure before the POST: nothing is sent
+ok 203 - storage failure before the POST: nothing is sent
+  ---
+  duration_ms: 0.395517
+  type: 'test'
+  ...
+# Subtest: 400: definitive rejection, pending cleared, next attempt gets a new key
+ok 204 - 400: definitive rejection, pending cleared, next attempt gets a new key
+  ---
+  duration_ms: 0.324529
+  type: 'test'
+  ...
+# Subtest: 403: definitive rejection, pending cleared, next attempt gets a new key
+ok 205 - 403: definitive rejection, pending cleared, next attempt gets a new key
+  ---
+  duration_ms: 0.343048
+  type: 'test'
+  ...
+# Subtest: 422: definitive rejection, pending cleared, next attempt gets a new key
+ok 206 - 422: definitive rejection, pending cleared, next attempt gets a new key
+  ---
+  duration_ms: 0.401969
+  type: 'test'
+  ...
+# Subtest: 422 INSUFFICIENT_FUNDS (after the backend fix): specific rejection
+ok 207 - 422 INSUFFICIENT_FUNDS (after the backend fix): specific rejection
+  ---
+  duration_ms: 0.243649
+  type: 'test'
+  ...
+# Subtest: 409 key reuse with different params (coded): client bug, new key for the new intent
+ok 208 - 409 key reuse with different params (coded): client bug, new key for the new intent
+  ---
+  duration_ms: 0.246134
+  type: 'test'
+  ...
+# Subtest: uncertain (503 (today: Formance rejection / ledger error)) → reference found in history → success
+ok 209 - uncertain (503 (today: Formance rejection / ledger error)) → reference found in history → success
+  ---
+  duration_ms: 0.671495
+  type: 'test'
+  ...
+# Subtest: uncertain (409 in progress) → reference found in history → success
+ok 210 - uncertain (409 in progress) → reference found in history → success
+  ---
+  duration_ms: 0.193461
+  type: 'test'
+  ...
+# Subtest: uncertain (500) → reference found in history → success
+ok 211 - uncertain (500) → reference found in history → success
+  ---
+  duration_ms: 0.26474
+  type: 'test'
+  ...
+# Subtest: uncertain (network error) → reference found in history → success
+ok 212 - uncertain (network error) → reference found in history → success
+  ---
+  duration_ms: 0.317663
+  type: 'test'
+  ...
+# Subtest: uncertain (timeout) → reference found in history → success
+ok 213 - uncertain (timeout) → reference found in history → success
+  ---
+  duration_ms: 0.17381
+  type: 'test'
+  ...
+# Subtest: uncertain (malformed 200) → reference found in history → success
+ok 214 - uncertain (malformed 200) → reference found in history → success
+  ---
+  duration_ms: 0.145343
+  type: 'test'
+  ...
+# Subtest: uncertain → not found → stays pending (persisted), no new key, no auto-retry
+ok 215 - uncertain → not found → stays pending (persisted), no new key, no auto-retry
+  ---
+  duration_ms: 0.236317
+  type: 'test'
+  ...
+# Subtest: uncertain → search budget exhausted → notFoundYet; history error → checkFailed
+ok 216 - uncertain → search budget exhausted → notFoundYet; history error → checkFailed
+  ---
+  duration_ms: 0.342465
+  type: 'test'
+  ...
+# Subtest: manual "Check status": counts, persists, and resolves once the debit appears
+ok 217 - manual "Check status": counts, persists, and resolves once the debit appears
+  ---
+  duration_ms: 0.352582
+  type: 'test'
+  ...
+# Subtest: "Try again" reuses the same key and params: 409 → still uncertain, replayed 200 → success
+ok 218 - "Try again" reuses the same key and params: 409 → still uncertain, replayed 200 → success
+  ---
+  duration_ms: 0.296645
+  type: 'test'
+  ...
+# Subtest: resume after restart: a new engine instance reads the persisted transfer and checks it
+ok 219 - resume after restart: a new engine instance reads the persisted transfer and checks it
+  ---
+  duration_ms: 0.304913
+  type: 'test'
+  ...
+# Subtest: resume ignores another user’s or a malformed stored transfer
+ok 220 - resume ignores another user’s or a malformed stored transfer
+  ---
+  duration_ms: 0.109604
+  type: 'test'
+  ...
+# Subtest: stop tracking: only after a manual check; then the same recipient + amount warns again
+ok 221 - stop tracking: only after a manual check; then the same recipient + amount warns again
+  ---
+  duration_ms: 0.462511
+  type: 'test'
+  ...
+# Subtest: returning approved user goes straight to Home (no verified screens)
+ok 222 - returning approved user goes straight to Home (no verified screens)
+  ---
+  duration_ms: 1.376685
+  type: 'test'
+  ...
+# Subtest: KYC turning APPROVED during the session shows the verified screens exactly once
+ok 223 - KYC turning APPROVED during the session shows the verified screens exactly once
+  ---
+  duration_ms: 0.276993
+  type: 'test'
+  ...
+# Subtest: pending at session start, approved later in the session: verified screens once
+ok 224 - pending at session start, approved later in the session: verified screens once
+  ---
+  duration_ms: 0.282993
+  type: 'test'
+  ...
+# Subtest: APPROVED but account not yet ACTIVE, then activated in session: transition is the activation
+ok 225 - APPROVED but account not yet ACTIVE, then activated in session: transition is the activation
+  ---
+  duration_ms: 0.172446
+  type: 'test'
+  ...
+# Subtest: suspension in the authenticated area still wins over acknowledgement
+ok 226 - suspension in the authenticated area still wins over acknowledgement
+  ---
+  duration_ms: 0.156402
+  type: 'test'
+  ...
+# Subtest: rule details: only an eligible-after / not-eligible-before change resets acknowledgement
+ok 227 - rule details: only an eligible-after / not-eligible-before change resets acknowledgement
+  ---
+  duration_ms: 0.196073
+  type: 'test'
+  ...
+# Subtest: READY: one item per wallet in API order, exact amounts, pending only when non-zero
+ok 228 - READY: one item per wallet in API order, exact amounts, pending only when non-zero
+  ---
+  duration_ms: 13.122266
+  type: 'test'
+  ...
+# Subtest: PROVISIONING: banner, and NOT_PROVISIONED wallets are "Setting up…", never 0
+ok 229 - PROVISIONING: banner, and NOT_PROVISIONED wallets are "Setting up…", never 0
+  ---
+  duration_ms: 0.406719
+  type: 'test'
+  ...
+# Subtest: NOT_ELIGIBLE: explanation banner, all 6 wallets shown as not provisioned, no amounts
+ok 230 - NOT_ELIGIBLE: explanation banner, all 6 wallets shown as not provisioned, no amounts
+  ---
+  duration_ms: 0.169037
+  type: 'test'
+  ...
+# Subtest: a wallet with an unknown status but a balance is shown as its balance (as stored)
+ok 231 - a wallet with an unknown status but a balance is shown as its balance (as stored)
+  ---
+  duration_ms: 0.120227
+  type: 'test'
+  ...
+# Subtest: no total across currencies is computed anywhere in the view-model
+ok 232 - no total across currencies is computed anywhere in the view-model
+  ---
+  duration_ms: 0.106369
+  type: 'test'
+  ...
+# Subtest: parser rejects malformed wallet responses instead of rendering them
+ok 233 - parser rejects malformed wallet responses instead of rendering them
+  ---
+  duration_ms: 0.640996
+  type: 'test'
+  ...
+1..233
+# tests 233
+# suites 0
+# pass 233
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1423.082736
+EXIT=0

@@ -1,0 +1,16 @@
+labels
+click:Add money
+wait:2000
+shot:m12-add-money
+body:add
+back
+click:Send
+wait:2000
+shot:m13-send
+body:send
+back
+click:Convert
+wait:2000
+shot:m14-convert
+body:convert
+back

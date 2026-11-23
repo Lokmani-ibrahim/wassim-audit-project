@@ -1,0 +1,24 @@
+create staff user: 201
+realm roles of a freshly created staff user: ['CUSTOMER', 'default-roles-neos', 'offline_access', 'uma_authorization']
+assign COMPLIANCE_OFFICER: 204
+remove default-roles-neos (CUSTOMER) from staff: 204
+staff realm roles now: ['COMPLIANCE_OFFICER']
+[console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[api 200] GET /api/backoffice/me
+[info] staff after login url=http://localhost:5173/ body=NEOS BACKOFFICE WORKSPACE Home Customers Local isolated realm Staff workspace ST Staff session Local isolated realm Sign out Backoffice Signed in to the connected staff workspace. Staff access active Your session is connected to the configured NEOS environment.
+[api 200] GET /api/backoffice/me
+[api 200] GET /api/backoffice/customers?pageSize=25
+[api 200] GET /api/backoffice/customers?pageSize=25
+[info] customers body=Customers Connected read-only directory Exact email or user ID Search Account status All PENDING_KYC ACTIVE SUSPENDED CLOSED KYC status All No KYC record NOT_STARTED PENDING IN_REVIEW APPROVED REJECTED RESUBMISSION_REQUIRED Email User ID Account status KYC status Created audit.weakpw@example.test 97cddace-3a3c-47ef-ac39-8fe029868763 PENDING_KYC NOT_STARTED 23/11/2026
+[info] detail url=http://localhost:5173/customers body=Customers Connected read-only directory Exact email or user ID Search Account status All PENDING_KYC ACTIVE SUSPENDED CLOSED KYC status All No KYC record NOT_STARTED PENDING IN_REVIEW APPROVED REJECTED RESUBMISSION_REQUIRED Email User ID Account status KYC status Created audit.weakpw@example.test 97cddace-3a3c-47ef-ac39-8fe029868763 PENDING_KYC NOT_STARTED 23/11/2026
+[api 200] GET /api/backoffice/me
+[api 200] GET /api/backoffice/customers?pageSize=25
+[api 200] GET /api/backoffice/customers?pageSize=25
+[info] customers body=Customers Connected read-only directory Exact email or user ID Search Account status All PENDING_KYC ACTIVE SUSPENDED CLOSED KYC status All No KYC record NOT_STARTED PENDING IN_REVIEW APPROVED REJECTED RESUBMISSION_REQUIRED Email User ID Account status KYC status Created audit.weakpw@example.test 97cddace-3a3c-47ef-ac39-8fe029868763 PENDING_KYC NOT_STARTED 23/11/2026
+[api 200] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763
+[api 200] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763
+[api 503] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763/wallets
+[api 503] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763/transactions?currency=EUR&pageSize=20
+[api 503] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763/transactions?currency=EUR&pageSize=20
+[api 503] GET /api/backoffice/customers/97cddace-3a3c-47ef-ac39-8fe029868763/wallets
+[info] detail url=http://localhost:5173/customers/97cddace-3a3c-47ef-ac39-8fe029868763 body=← Customers Customer detail User ID 97cddace-3a3c-47ef-ac39-8fe029868763 Email audit.weakpw@example.test Account status PENDING_KYC KYC status NOT_STARTED Created 23/11/2026 21:10:14 Wallets and balances Ledger service unavailable Retry Transaction history Transaction currency EUR USD GBP AED MUR TND Ledger service unavailable Retry

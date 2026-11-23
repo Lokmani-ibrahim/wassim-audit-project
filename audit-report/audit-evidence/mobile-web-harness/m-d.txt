@@ -1,0 +1,5 @@
+aria:^Notifications$
+wait:2500
+shot:m16-notifications
+body:notif
+labels

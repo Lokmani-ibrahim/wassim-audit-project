@@ -1,0 +1,6 @@
+$ npm run lint
+
+> neos-mobile@1.0.0 lint
+> eslint App.tsx src tests app.config.ts
+
+EXIT=0

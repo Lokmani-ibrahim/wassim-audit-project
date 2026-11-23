@@ -1,0 +1,19 @@
+wait:8000
+click:Let’s begin
+input:0=demo.client@example.test
+input:1=Demo-Passw0rd!
+input:2=Demo-Passw0rd!
+click:Create account
+wait:2000
+input:1=+216 20 000 000
+click:Continue
+wait:1500
+click:I agree to the NEOS terms of service.
+click:Confirm and continue
+wait:2500
+click:Start verification
+wait:4000
+click:Continue
+wait:3000
+click:Go to home
+wait:4000

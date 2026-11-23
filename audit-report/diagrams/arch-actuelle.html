@@ -1,0 +1,153 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Architecture actuelle</title>
+<style>
+  body{margin:0;background:#fff;font-family:"Liberation Sans",Arial,sans-serif}
+  svg text{font-family:"Liberation Sans",Arial,sans-serif}
+</style></head>
+<body>
+<svg id="d" width="1400" height="790" viewBox="0 0 1400 790" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1F2A44"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A8F99"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1400" height="790" fill="#ffffff"/>
+
+  <!-- OIDC bus -->
+  <path d="M260,60 L260,22 L1180,22 L1180,196" fill="none" stroke="#C9A227" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M740,60 L740,22" fill="none" stroke="#C9A227" stroke-width="2.5"/>
+  <rect x="820" y="10" width="300" height="24" fill="#fff"/>
+  <text x="970" y="27" font-size="15" fill="#7A5F00" text-anchor="middle" font-weight="bold">Authentification OIDC + PKCE (S256)</text>
+
+  <!-- Clients -->
+  <rect x="60" y="60" width="400" height="92" rx="10" fill="#1F2A44"/>
+  <text x="260" y="95" font-size="19" fill="#fff" text-anchor="middle" font-weight="bold">Application mobile (Android)</text>
+  <text x="260" y="122" font-size="14" fill="#E8D9A0" text-anchor="middle">React Native 0.83 · Expo SDK 55 · TypeScript strict</text>
+  <text x="260" y="141" font-size="13" fill="#C9CED8" text-anchor="middle">Jetons en SecureStore · verrou biométrique</text>
+
+  <rect x="540" y="60" width="400" height="92" rx="10" fill="#1F2A44"/>
+  <text x="740" y="95" font-size="19" fill="#fff" text-anchor="middle" font-weight="bold">Backoffice web (staff)</text>
+  <text x="740" y="122" font-size="14" fill="#E8D9A0" text-anchor="middle">React 18 · Vite 6 · keycloak-js</text>
+  <text x="740" y="141" font-size="13" fill="#C9CED8" text-anchor="middle">Lecture seule · version démo séparée</text>
+
+  <!-- Keycloak -->
+  <rect x="1020" y="196" width="320" height="110" rx="10" fill="#F4EEDB" stroke="#C9A227" stroke-width="2"/>
+  <text x="1180" y="232" font-size="19" fill="#1F2A44" text-anchor="middle" font-weight="bold">Keycloak 26.7</text>
+  <text x="1180" y="257" font-size="14" fill="#1F2A44" text-anchor="middle">Realm « neos » · clients publics</text>
+  <text x="1180" y="278" font-size="14" fill="#1F2A44" text-anchor="middle">Rôles CUSTOMER / ADMIN /</text>
+  <text x="1180" y="297" font-size="14" fill="#1F2A44" text-anchor="middle">COMPLIANCE_OFFICER</text>
+
+  <!-- client -> backend -->
+  <line x1="260" y1="152" x2="260" y2="226" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="272" y="194" font-size="14" fill="#1F2A44">REST JSON + JWT Bearer</text>
+  <line x1="740" y1="152" x2="740" y2="226" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="752" y="186" font-size="14" fill="#1F2A44">/api (proxy Vite en dev,</text>
+  <text x="752" y="204" font-size="14" fill="#1F2A44">aucun proxy de prod fourni)</text>
+
+  <!-- Backend -->
+  <rect x="60" y="230" width="880" height="300" rx="12" fill="#F2F2F2" stroke="#1F2A44" stroke-width="2"/>
+  <text x="80" y="262" font-size="20" fill="#1F2A44" font-weight="bold">Backend — monolithe modulaire</text>
+  <text x="80" y="285" font-size="14" fill="#444">Java 21 · Spring Boot 4.1 · Spring Modulith 2.1 · Spring Security (resource server) · JPA + JdbcTemplate</text>
+
+  <g font-size="15">
+    <rect x="80" y="305" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="180" y="338" text-anchor="middle" font-weight="bold" fill="#1F2A44">identity</text>
+    <text x="180" y="360" text-anchor="middle" font-size="13" fill="#555">1 594 lignes</text>
+    <text x="180" y="379" text-anchor="middle" font-size="12" fill="#555">utilisateurs, sécurité, staff</text>
+
+    <rect x="295" y="305" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="395" y="338" text-anchor="middle" font-weight="bold" fill="#1F2A44">onboarding</text>
+    <text x="395" y="360" text-anchor="middle" font-size="13" fill="#555">634 lignes</text>
+    <text x="395" y="379" text-anchor="middle" font-size="12" fill="#555">profil, CGU, appareil</text>
+
+    <rect x="510" y="305" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="610" y="338" text-anchor="middle" font-weight="bold" fill="#1F2A44">kyc</text>
+    <text x="610" y="360" text-anchor="middle" font-size="13" fill="#555">3 036 lignes</text>
+    <text x="610" y="379" text-anchor="middle" font-size="12" fill="#555">Sumsub, webhook HMAC</text>
+
+    <rect x="725" y="305" width="200" height="88" rx="8" fill="#FFF4E0" stroke="#C76A00" stroke-width="2"/>
+    <text x="825" y="338" text-anchor="middle" font-weight="bold" fill="#C76A00">ledger</text>
+    <text x="825" y="360" text-anchor="middle" font-size="13" fill="#C76A00">12 921 lignes (≈ 60 %)</text>
+    <text x="825" y="379" text-anchor="middle" font-size="12" fill="#8a4a00">wallets, virements, FX, payouts</text>
+
+    <rect x="80" y="408" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="180" y="441" text-anchor="middle" font-weight="bold" fill="#1F2A44">notifications</text>
+    <text x="180" y="463" text-anchor="middle" font-size="13" fill="#555">2 997 lignes</text>
+    <text x="180" y="482" text-anchor="middle" font-size="12" fill="#555">outbox, e-mail, flux in-app</text>
+
+    <rect x="295" y="408" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="395" y="441" text-anchor="middle" font-weight="bold" fill="#1F2A44">backoffice</text>
+    <text x="395" y="463" text-anchor="middle" font-size="13" fill="#555">400 lignes</text>
+    <text x="395" y="482" text-anchor="middle" font-size="12" fill="#555">lectures staff</text>
+
+    <rect x="510" y="408" width="200" height="88" rx="8" fill="#fff" stroke="#9AA3B5"/>
+    <text x="610" y="441" text-anchor="middle" font-weight="bold" fill="#1F2A44">shared</text>
+    <text x="610" y="463" text-anchor="middle" font-size="13" fill="#555">82 lignes</text>
+    <text x="610" y="482" text-anchor="middle" font-size="12" fill="#555">monnaie, politiques</text>
+
+    <rect x="725" y="408" width="200" height="88" rx="8" fill="#fff" stroke="#B3261E" stroke-dasharray="6 4" stroke-width="2"/>
+    <text x="825" y="441" text-anchor="middle" font-weight="bold" fill="#B3261E">payments</text>
+    <text x="825" y="463" text-anchor="middle" font-size="13" fill="#B3261E">3 lignes</text>
+    <text x="825" y="482" text-anchor="middle" font-size="12" fill="#B3261E">interface vide</text>
+  </g>
+
+  <!-- backend -> keycloak -->
+  <line x1="940" y1="300" x2="1016" y2="270" stroke="#8A8F99" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#g)"/>
+  <text x="948" y="330" font-size="13" fill="#555">JWKS</text>
+
+  <!-- backend -> data -->
+  <line x1="160" y1="530" x2="160" y2="596" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="390" y1="530" x2="390" y2="596" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="620" y1="530" x2="620" y2="596" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="845" y1="530" x2="845" y2="596" stroke="#1F2A44" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="172" y="568" font-size="13" fill="#1F2A44">JDBC</text>
+  <text x="402" y="568" font-size="13" fill="#1F2A44">HTTP</text>
+  <text x="632" y="568" font-size="13" fill="#1F2A44">HTTP + webhook</text>
+  <text x="857" y="568" font-size="13" fill="#1F2A44">HTTP</text>
+
+  <g>
+    <rect x="60" y="600" width="200" height="106" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="160" y="633" font-size="17" text-anchor="middle" font-weight="bold" fill="#1F2A44">PostgreSQL</text>
+    <text x="160" y="656" font-size="13" text-anchor="middle" fill="#333">Flyway · 18 migrations</text>
+    <text x="160" y="675" font-size="13" text-anchor="middle" fill="#333">identité, KYC, outbox,</text>
+    <text x="160" y="692" font-size="13" text-anchor="middle" fill="#333">idempotence, audit</text>
+
+    <rect x="290" y="600" width="200" height="106" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="390" y="633" font-size="17" text-anchor="middle" font-weight="bold" fill="#1F2A44">Formance Ledger</text>
+    <text x="390" y="656" font-size="13" text-anchor="middle" fill="#333">source de vérité</text>
+    <text x="390" y="675" font-size="13" text-anchor="middle" fill="#333">des soldes</text>
+    <text x="390" y="692" font-size="12" text-anchor="middle" fill="#B3261E">non fourni dans le dépôt</text>
+
+    <rect x="520" y="600" width="200" height="106" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="620" y="633" font-size="17" text-anchor="middle" font-weight="bold" fill="#1F2A44">Sumsub</text>
+    <text x="620" y="656" font-size="13" text-anchor="middle" fill="#333">KYC : SDK mobile,</text>
+    <text x="620" y="675" font-size="13" text-anchor="middle" fill="#333">API + webhook signé</text>
+
+    <rect x="750" y="600" width="190" height="106" rx="10" fill="#E7ECF5" stroke="#1F2A44"/>
+    <text x="845" y="633" font-size="17" text-anchor="middle" font-weight="bold" fill="#1F2A44">Microsoft Graph</text>
+    <text x="845" y="656" font-size="13" text-anchor="middle" fill="#333">e-mails via outbox</text>
+    <text x="845" y="675" font-size="13" text-anchor="middle" fill="#333">(désactivé par défaut)</text>
+  </g>
+
+  <!-- Infra present -->
+  <rect x="1020" y="340" width="320" height="366" rx="10" fill="#fff" stroke="#9AA3B5"/>
+  <text x="1180" y="372" font-size="17" text-anchor="middle" font-weight="bold" fill="#1F2A44">Infrastructure présente</text>
+  <g font-size="14" fill="#2E7D32">
+    <text x="1040" y="404">✔ compose.yml : Keycloak + sa base</text>
+    <text x="1040" y="430">✔ export du realm Keycloak</text>
+    <text x="1040" y="456">✔ schémas Formance (JSON)</text>
+    <text x="1040" y="482">✔ scripts SQL de durcissement</text>
+    <text x="1040" y="508">✔ profils EAS (dev/staging/prod)</text>
+  </g>
+  <text x="1180" y="546" font-size="17" text-anchor="middle" font-weight="bold" fill="#B3261E">Absent</text>
+  <g font-size="14" fill="#B3261E">
+    <text x="1040" y="576">✘ Dockerfile backend / backoffice</text>
+    <text x="1040" y="602">✘ compose PostgreSQL + Formance</text>
+    <text x="1040" y="628">✘ reverse proxy / TLS</text>
+    <text x="1040" y="654">✘ CI/CD (aucun workflow)</text>
+    <text x="1040" y="680">✘ supervision / logs centralisés</text>
+  </g>
+
+  <text x="60" y="748" font-size="14" fill="#555">Légende : bleu nuit = composants du dépôt · bleu clair = services externes · orange = module surdimensionné · rouge pointillé = vide/absent.</text>
+  <text x="60" y="772" font-size="14" fill="#555">Lignes par module mesurées sur src/main/java (21 682 lignes au total, 208 fichiers).</text>
+</svg>
+</body></html>

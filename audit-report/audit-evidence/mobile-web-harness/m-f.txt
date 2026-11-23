@@ -1,0 +1,6 @@
+click:Profile
+wait:2500
+click:Account security
+wait:3000
+shot:m19-security
+body:security

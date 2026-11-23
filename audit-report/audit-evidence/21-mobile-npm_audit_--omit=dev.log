@@ -1,0 +1,82 @@
+$ npm audit --omit=dev
+# npm audit report
+
+glob  9.0.0 - 14.0.1
+Severity: moderate
+Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal - https://github.com/advisories/GHSA-3g3m-2fjr-6pw4
+Depends on vulnerable versions of minimatch
+fix available via `npm audit fix --force`
+Will install expo@52.0.49, which is a breaking change
+node_modules/glob
+  @expo/cli  0.19.0-canary-20240625-2333e70 - 57.0.32 || 58.0.0-canary-20260806-8c2d007 - 58.1.19
+  Depends on vulnerable versions of @expo/config
+  Depends on vulnerable versions of @expo/config-plugins
+  Depends on vulnerable versions of @expo/metro-config
+  Depends on vulnerable versions of @expo/prebuild-config
+  Depends on vulnerable versions of glob
+  Depends on vulnerable versions of zod
+  node_modules/expo/node_modules/@expo/cli
+  @expo/config  9.1.0-canary-20240628-1ba8152 - 57.0.10 || 58.0.0-canary-20260806-8c2d007 - 58.0.10
+  Depends on vulnerable versions of @expo/config-plugins
+  Depends on vulnerable versions of glob
+  node_modules/@expo/config
+    @expo/local-build-cache-provider  <=57.0.0-canary-20260723-64edab9 || 58.0.0-canary-20260806-8c2d007 - 58.0.0-canary-20260909-ea7a89a
+    Depends on vulnerable versions of @expo/config
+    node_modules/@expo/local-build-cache-provider
+      expo  >=52.0.0-canary-20240625-2333e70
+      Depends on vulnerable versions of @expo/cli
+      Depends on vulnerable versions of @expo/config
+      Depends on vulnerable versions of @expo/config-plugins
+      Depends on vulnerable versions of @expo/fingerprint
+      Depends on vulnerable versions of @expo/local-build-cache-provider
+      Depends on vulnerable versions of @expo/metro-config
+      node_modules/expo
+    @expo/metro-config  0.19.0-canary-20240625-2333e70 - 57.0.13 || 58.0.0-canary-20260806-8c2d007 - 58.0.20
+    Depends on vulnerable versions of @expo/config
+    Depends on vulnerable versions of glob
+    node_modules/@expo/metro-config
+  @expo/config-plugins  8.0.9-canary-20240719-83ee47b - 8.0.9-canary-20240814-ce0f7d5 || 8.1.0-canary-20240904-69100c1 - 57.0.11 || 58.0.0-canary-20260806-8c2d007 - 58.0.11
+  Depends on vulnerable versions of glob
+  node_modules/@expo/config-plugins
+    @expo/prebuild-config  7.0.9-canary-20240719-83ee47b - 7.0.9-canary-20240814-ce0f7d5 || 7.1.0-canary-20240904-69100c1 - 57.0.0-canary-20260723-64edab9 || 58.0.0-canary-20260806-8c2d007 - 58.0.0-canary-20260909-ea7a89a
+    Depends on vulnerable versions of @expo/config
+    Depends on vulnerable versions of @expo/config-plugins
+    node_modules/@expo/prebuild-config
+    expo-sharing  14.0.9-canary-20251205-756eb7a - 57.0.0-canary-20260723-64edab9 || 58.0.0-canary-20260806-8c2d007 - 58.0.0-canary-20260909-ea7a89a
+    Depends on vulnerable versions of @expo/config-plugins
+    node_modules/expo-sharing
+  @expo/fingerprint  >=0.11.12-canary-20250303-4dba60e
+  Depends on vulnerable versions of glob
+  Depends on vulnerable versions of minimatch
+  node_modules/@expo/fingerprint
+
+minimatch  7.0.0 - 11.0.0
+Severity: moderate
+minimatch has potential denial of service via globparts amplification - https://github.com/advisories/GHSA-g3hv-75wg-m249
+fix available via `npm audit fix --force`
+Will install expo@52.0.49, which is a breaking change
+node_modules/minimatch
+
+node-forge  <=1.4.2
+Severity: moderate
+Forge: Ed25519 signature verification accepts small-order public keys - https://github.com/advisories/GHSA-6889-vf6x-f3g5
+Forge: TLS client crash on an unsupported ServerHello compression method - https://github.com/advisories/GHSA-w4xr-hqv8-ch44
+Forge: ReDoS in forge.http response header and cookie trimming - https://github.com/advisories/GHSA-6cv4-p8m7-4r25
+Forge: TLS client crash on a handshake record received without a session - https://github.com/advisories/GHSA-j8rw-jp99-435v
+fix available via `npm audit fix`
+node_modules/node-forge
+
+zod  <4.6.6
+Severity: high
+Zod can exhaust memory while validating oversized constrained collections - https://github.com/advisories/GHSA-mrhx-c7xc-m3w5
+fix available via `npm audit fix`
+node_modules/zod
+
+13 vulnerabilities (11 moderate, 2 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+EXIT=1

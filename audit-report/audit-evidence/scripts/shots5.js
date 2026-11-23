@@ -1,0 +1,30 @@
+const { chromium } = require('playwright-core');
+const fs = require('fs');
+const [out, user, pwFile] = process.argv.slice(2);
+const pw = fs.readFileSync(pwFile, 'utf8');
+(async () => {
+  const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
+  const ctx = await browser.newContext({ viewport: { width: 1360, height: 860 } });
+  const page = await ctx.newPage();
+  const logs = [];
+  page.on('response', r => { if (r.url().includes('/api/')) logs.push(`[api ${r.status()}] ${r.request().method()} ${r.url().replace('http://localhost:5173','')}`); });
+  await page.goto('http://localhost:5173/', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: /sign in/i }).first().click();
+  await page.waitForLoadState('networkidle');
+  await page.fill('#username', user); await page.fill('#password', pw);
+  await page.locator('#kc-login').click();
+  await page.waitForLoadState('networkidle'); await page.waitForTimeout(2500);
+  await page.screenshot({ path: `${out}/bo-staff-home.png` });
+  await page.getByRole('link', { name: /customers/i }).first().click();
+  await page.waitForTimeout(3000);
+  logs.push('[info] customers body=' + (await page.innerText('main')).replace(/\s+/g,' ').slice(0,400));
+  await page.screenshot({ path: `${out}/bo-staff-customers.png` });
+  const row = page.locator('tbody a[href^="/customers/"]').first();
+  if (await row.count()) {
+    await row.click(); await page.waitForTimeout(4000);
+    logs.push('[info] detail url=' + page.url() + ' body=' + (await page.innerText('main')).replace(/\s+/g,' ').slice(0,600));
+    await page.screenshot({ path: `${out}/bo-staff-customer-detail.png`, fullPage: true });
+  } else logs.push('[info] no row found');
+  fs.writeFileSync(`${out}/shots5-console.log`, logs.join('\n'));
+  await browser.close();
+})().catch(e => { console.error(e); process.exit(1); });

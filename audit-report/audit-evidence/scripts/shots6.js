@@ -1,0 +1,24 @@
+const { chromium } = require('playwright-core');
+const fs = require('fs');
+const out = process.argv[2];
+(async () => {
+  const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true });
+  const ctx = await browser.newContext({ viewport: { width: 1360, height: 860 } });
+  const page = await ctx.newPage();
+  const logs = [];
+  await page.goto('http://127.0.0.1:5174/demo.html', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(800);
+  await page.fill('input[type=text]', 'x'); await page.fill('input[type=password]', 'x');
+  await page.locator('button[type=submit]').click(); await page.waitForTimeout(1500);
+  logs.push('[info] demo login with x/x -> ' + page.url());
+  await page.screenshot({ path: `${out}/bo-demo-overview.png` });
+  const links = await page.locator('nav a').allInnerTexts();
+  logs.push('[info] demo nav: ' + links.join(' | '));
+  await page.getByRole('link', { name: 'KYC reviews' }).first().click().catch(()=>{});
+  await page.waitForTimeout(1000);
+  await page.locator('tbody tr').first().click().catch(()=>{});
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: `${out}/bo-demo-kyc-case.png` });
+  fs.writeFileSync(`${out}/shots6-console.log`, logs.join('\n'));
+  await browser.close();
+})().catch(e => { console.error(e); process.exit(1); });
