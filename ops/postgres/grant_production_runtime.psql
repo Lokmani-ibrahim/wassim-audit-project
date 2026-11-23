@@ -1,0 +1,576 @@
+
+\set ON_ERROR_STOP on
+
+-- ============================================================
+-- NEOS — Production Runtime Database Privileges
+-- ============================================================
+--
+-- PURPOSE:
+-- Configure least-privilege PostgreSQL permissions for
+-- the NEOS application runtime.
+--
+-- DATABASE ROLES:
+--
+-- fintech_migrator:
+--   Executes Flyway migrations and owns database tables.
+--
+-- fintech_runtime:
+--   Runs the Spring Boot production application.
+--   Must not own application tables or migration objects.
+--
+-- REQUIREMENTS:
+-- 1. Production database dedicated to NEOS.
+-- 2. Both roles must already exist.
+-- 3. Flyway migrations must already be applied.
+-- 4. Tables must be owned by fintech_migrator.
+-- 5. Execute as a sufficiently privileged database owner.
+-- 6. Never execute against fintech_dev.
+-- 7. Do not execute automatically through Flyway.
+--
+-- EXAMPLE:
+--
+-- psql -v expected_db=neos_prod \
+--      -f ops/postgres/grant_production_runtime.psql
+--
+-- ============================================================
+
+\if :{?expected_db}
+\else
+    \echo 'Missing -v expected_db=<production_database>'
+    \quit 1
+\endif
+
+BEGIN;
+
+SELECT set_config(
+    'neos.deploy.expected_db',
+    :'expected_db',
+    true
+);
+
+-- ============================================================
+-- 1. VALIDATE PRODUCTION ENVIRONMENT
+-- ============================================================
+
+DO $$
+BEGIN
+
+    -- Never modify the development database.
+    IF current_database() = 'fintech_dev'
+       OR current_database() <>
+          current_setting('neos.deploy.expected_db')
+    THEN
+        RAISE EXCEPTION
+            'Incorrect or forbidden target database: %',
+            current_database();
+    END IF;
+
+    -- Verify the runtime role exists and is unprivileged.
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_roles
+        WHERE rolname = 'fintech_runtime'
+          AND rolcanlogin
+          AND NOT rolsuper
+          AND NOT rolcreaterole
+          AND NOT rolcreatedb
+          AND NOT rolbypassrls
+    ) THEN
+        RAISE EXCEPTION
+            'Safe fintech_runtime role not provisioned';
+    END IF;
+
+    -- Verify the migration role exists.
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_roles
+        WHERE rolname = 'fintech_migrator'
+    ) THEN
+        RAISE EXCEPTION
+            'fintech_migrator role not provisioned';
+    END IF;
+
+    -- Runtime must not belong to the migration role.
+    IF pg_has_role(
+        'fintech_runtime',
+        'fintech_migrator',
+        'MEMBER'
+    ) THEN
+        RAISE EXCEPTION
+            'Runtime must not be a migrator role member';
+    END IF;
+
+    -- All application tables must be owned by the migrator.
+    IF EXISTS (
+        SELECT 1
+        FROM pg_class c
+        JOIN pg_namespace n
+          ON n.oid = c.relnamespace
+        WHERE n.nspname = 'public'
+          AND c.relkind IN ('r', 'p')
+          AND pg_get_userbyid(c.relowner)
+              <> 'fintech_migrator'
+    ) THEN
+        RAISE EXCEPTION
+            'Production tables are not all owned by fintech_migrator';
+    END IF;
+
+    -- Reject unknown tables until explicitly classified.
+    -- Update this allowlist when new migrations add tables.
+    IF EXISTS (
+        SELECT 1
+        FROM pg_class c
+        JOIN pg_namespace n
+          ON n.oid = c.relnamespace
+        WHERE n.nspname = 'public'
+          AND c.relkind IN ('r', 'p')
+          AND c.relname NOT IN (
+              'customer_transfer_idempotency',
+              'customer_transfer_reconciliation_audit',
+              'devices',
+              'event_publication',
+              'flyway_schema_history',
+              'kyc_status',
+              'notification_outbox',
+              'payout_reconciliation_audit',
+              'payout_requests',
+              'terms_acceptances',
+              'users'
+          )
+    ) THEN
+        RAISE EXCEPTION
+            'Unclassified production table found';
+    END IF;
+
+    -- Current schema inventory contains no sequences.
+    -- Fail closed if new migrations introduce sequences.
+    IF EXISTS (
+        SELECT 1
+        FROM pg_class c
+        JOIN pg_namespace n
+          ON n.oid = c.relnamespace
+        WHERE n.nspname = 'public'
+          AND c.relkind = 'S'
+    ) THEN
+        RAISE EXCEPTION
+            'Sequences found: configure explicit runtime grants';
+    END IF;
+
+    RAISE NOTICE
+        'Production environment checks passed';
+
+END;
+$$;
+
+-- ============================================================
+-- 2. SCHEMA PERMISSIONS
+-- ============================================================
+
+-- Production database must be dedicated to NEOS.
+
+-- Prevent object creation through PUBLIC privileges.
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+
+-- Allow application access to existing objects.
+GRANT USAGE ON SCHEMA public TO fintech_runtime;
+
+-- Runtime must not create database objects.
+REVOKE CREATE ON SCHEMA public FROM fintech_runtime;
+
+-- ============================================================
+-- 3. ORDINARY APPLICATION TABLES
+-- ============================================================
+
+-- These tables require normal application operations.
+-- DELETE is granted only when specifically required.
+
+-- Reset privileges on the explicit application allowlist.
+REVOKE ALL PRIVILEGES
+ON TABLE
+    public.customer_transfer_idempotency,
+    public.devices,
+    public.event_publication,
+    public.kyc_status,
+    public.notification_outbox,
+    public.payout_requests,
+    public.terms_acceptances,
+    public.users
+FROM PUBLIC;
+
+REVOKE ALL PRIVILEGES
+ON TABLE
+    public.customer_transfer_idempotency,
+    public.devices,
+    public.event_publication,
+    public.kyc_status,
+    public.notification_outbox,
+    public.payout_requests,
+    public.terms_acceptances,
+    public.users
+FROM fintech_runtime;
+
+-- Normal application operations.
+GRANT SELECT, INSERT, UPDATE
+ON TABLE
+    public.customer_transfer_idempotency,
+    public.devices,
+    public.event_publication,
+    public.kyc_status,
+    public.notification_outbox,
+    public.payout_requests,
+    public.terms_acceptances,
+    public.users
+TO fintech_runtime;
+
+-- Required by CustomerTransferIdempotencyService.
+-- This service executes DELETE FROM
+-- customer_transfer_idempotency during cleanup.
+
+GRANT DELETE
+ON TABLE public.customer_transfer_idempotency
+TO fintech_runtime;
+
+-- No DELETE granted to other ordinary tables.
+-- In particular:
+--   payout_requests      : no DELETE
+--   notification_outbox   : no DELETE
+--   event_publication     : no DELETE
+--
+-- event_publication uses UPDATE-based completion under
+-- the currently expected Spring Modulith configuration.
+-- Validate this against production runtime behavior.
+
+-- ============================================================
+-- 4. RECONCILIATION AUDIT TABLES
+-- ============================================================
+
+-- Both reconciliation audit tables are append-only
+-- from the application's perspective.
+--
+-- Allowed:
+--   SELECT
+--   INSERT
+--
+-- Forbidden:
+--   UPDATE
+--   DELETE
+--   TRUNCATE
+
+REVOKE ALL PRIVILEGES
+ON TABLE
+    public.customer_transfer_reconciliation_audit,
+    public.payout_reconciliation_audit
+FROM PUBLIC;
+
+REVOKE ALL PRIVILEGES
+ON TABLE
+    public.customer_transfer_reconciliation_audit,
+    public.payout_reconciliation_audit
+FROM fintech_runtime;
+
+GRANT SELECT, INSERT
+ON TABLE
+    public.customer_transfer_reconciliation_audit,
+    public.payout_reconciliation_audit
+TO fintech_runtime;
+
+-- ============================================================
+-- 5. FLYWAY HISTORY ISOLATION
+-- ============================================================
+
+-- Flyway must execute using fintech_migrator.
+-- Runtime must not read or modify migration history.
+
+REVOKE ALL PRIVILEGES
+ON TABLE public.flyway_schema_history
+FROM PUBLIC;
+
+REVOKE ALL PRIVILEGES
+ON TABLE public.flyway_schema_history
+FROM fintech_runtime;
+
+-- ============================================================
+-- 6. VERIFY EFFECTIVE PRIVILEGES
+-- ============================================================
+
+DO $$
+DECLARE
+    audit_table TEXT;
+    app_table TEXT;
+BEGIN
+
+    -- --------------------------------------------------------
+    -- 6.1 Verify reconciliation audit permissions
+    -- --------------------------------------------------------
+
+    FOREACH audit_table IN ARRAY ARRAY[
+        'public.customer_transfer_reconciliation_audit',
+        'public.payout_reconciliation_audit'
+    ]
+    LOOP
+
+        -- Deny UPDATE, including column-level permissions.
+        IF has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'UPDATE'
+        )
+        OR has_any_column_privilege(
+            'fintech_runtime',
+            audit_table,
+            'UPDATE'
+        )
+
+        -- Deny DELETE.
+        OR has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'DELETE'
+        )
+
+        -- Deny TRUNCATE.
+        OR has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'TRUNCATE'
+        )
+
+        -- Deny additional structural privileges.
+        OR has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'REFERENCES'
+        )
+        OR has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'TRIGGER'
+        )
+        THEN
+            RAISE EXCEPTION
+                'Runtime has forbidden audit privileges on %',
+                audit_table;
+        END IF;
+
+        -- Require SELECT.
+        IF NOT has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'SELECT'
+        ) THEN
+            RAISE EXCEPTION
+                'Runtime missing audit SELECT on %',
+                audit_table;
+        END IF;
+
+        -- Require INSERT.
+        IF NOT has_table_privilege(
+            'fintech_runtime',
+            audit_table,
+            'INSERT'
+        ) THEN
+            RAISE EXCEPTION
+                'Runtime missing audit INSERT on %',
+                audit_table;
+        END IF;
+
+        RAISE NOTICE
+            'Audit permissions verified: %',
+            audit_table;
+
+    END LOOP;
+
+    -- --------------------------------------------------------
+    -- 6.2 Verify ordinary application table permissions
+    -- --------------------------------------------------------
+
+    FOREACH app_table IN ARRAY ARRAY[
+        'public.customer_transfer_idempotency',
+        'public.devices',
+        'public.event_publication',
+        'public.kyc_status',
+        'public.notification_outbox',
+        'public.payout_requests',
+        'public.terms_acceptances',
+        'public.users'
+    ]
+    LOOP
+
+        -- Required application permissions.
+        IF NOT has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'SELECT'
+        )
+        OR NOT has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'INSERT'
+        )
+        OR NOT has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'UPDATE'
+        ) THEN
+            RAISE EXCEPTION
+                'Runtime missing required privileges on %',
+                app_table;
+        END IF;
+
+        -- DELETE is allowed only on the idempotency table.
+        IF app_table <>
+           'public.customer_transfer_idempotency'
+           AND has_table_privilege(
+               'fintech_runtime',
+               app_table,
+               'DELETE'
+           )
+        THEN
+            RAISE EXCEPTION
+                'Runtime has unauthorized DELETE on %',
+                app_table;
+        END IF;
+
+        -- No ordinary application table needs TRUNCATE,
+        -- REFERENCES, or TRIGGER privileges.
+        IF has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'TRUNCATE'
+        )
+        OR has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'REFERENCES'
+        )
+        OR has_table_privilege(
+            'fintech_runtime',
+            app_table,
+            'TRIGGER'
+        ) THEN
+            RAISE EXCEPTION
+                'Runtime has excessive privileges on %',
+                app_table;
+        END IF;
+
+    END LOOP;
+
+    -- --------------------------------------------------------
+    -- 6.3 Verify idempotency cleanup permission
+    -- --------------------------------------------------------
+
+    IF NOT has_table_privilege(
+        'fintech_runtime',
+        'public.customer_transfer_idempotency',
+        'DELETE'
+    ) THEN
+        RAISE EXCEPTION
+            'Runtime missing DELETE on customer_transfer_idempotency';
+    END IF;
+
+    RAISE NOTICE
+        'Ordinary application table permissions verified';
+
+    -- --------------------------------------------------------
+    -- 6.4 Verify Flyway history isolation
+    -- --------------------------------------------------------
+
+    IF has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'SELECT'
+    )
+    OR has_any_column_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'SELECT'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'INSERT'
+    )
+    OR has_any_column_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'INSERT'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'UPDATE'
+    )
+    OR has_any_column_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'UPDATE'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'DELETE'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'TRUNCATE'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'REFERENCES'
+    )
+    OR has_table_privilege(
+        'fintech_runtime',
+        'public.flyway_schema_history',
+        'TRIGGER'
+    ) THEN
+        RAISE EXCEPTION
+            'Runtime must not access Flyway schema history';
+    END IF;
+
+    RAISE NOTICE
+        'Flyway history isolation verified';
+
+    -- --------------------------------------------------------
+    -- 6.5 Verify schema permissions
+    -- --------------------------------------------------------
+
+    IF NOT has_schema_privilege(
+        'fintech_runtime',
+        'public',
+        'USAGE'
+    ) THEN
+        RAISE EXCEPTION
+            'Runtime missing public schema USAGE';
+    END IF;
+
+    IF has_schema_privilege(
+        'fintech_runtime',
+        'public',
+        'CREATE'
+    ) THEN
+        RAISE EXCEPTION
+            'Runtime must not create objects in public schema';
+    END IF;
+
+    RAISE NOTICE
+        'Schema permissions verified';
+
+    -- --------------------------------------------------------
+    -- 6.6 Final verification
+    -- --------------------------------------------------------
+
+    RAISE NOTICE
+        'NEOS production runtime privileges verified successfully';
+
+END;
+$$;
+
+-- ============================================================
+-- 7. COMMIT
+-- ============================================================
+
+COMMIT;
+
+\echo 'NEOS production runtime privileges verified'

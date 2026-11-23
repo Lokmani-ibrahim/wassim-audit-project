@@ -1,0 +1,111 @@
+{
+  "chart": {
+    "world": {},
+
+    "users": {
+      "$userId": {
+        ".pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+        "wallet": {
+          "EUR": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          },
+          "USD": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          },
+          "GBP": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          },
+          "AED": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          },
+          "MUR": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          },
+          "TND": {
+            "available": {},
+            "holds": {
+              "$operationId": {
+                ".pattern": "^[A-Za-z0-9_-]+$"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "bank": {
+      "$bankId": {
+        ".pattern": "^[A-Za-z0-9_-]+$",
+        "master": {
+          "EUR": {},
+          "USD": {},
+          "GBP": {},
+          "AED": {},
+          "MUR": {},
+          "TND": {}
+        }
+      }
+    },
+
+    "control": {
+      "safeguarded": {
+        "EUR": {},
+        "USD": {},
+        "GBP": {},
+        "AED": {},
+        "MUR": {},
+        "TND": {}
+      }
+    },
+
+    "suspense": {
+      "incoming": {
+        "EUR": {},
+        "USD": {},
+        "GBP": {},
+        "AED": {},
+        "MUR": {},
+        "TND": {}
+      }
+    },
+
+    "platform": {
+      "fees": {
+        "EUR": {},
+        "USD": {},
+        "GBP": {},
+        "AED": {},
+        "MUR": {},
+        "TND": {}
+      }
+    }
+  },
+
+  "transactions": {},
+  "queries": {}
+}

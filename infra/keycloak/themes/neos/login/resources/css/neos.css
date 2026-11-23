@@ -1,0 +1,300 @@
+/*
+ * NEOS login skin (CSS only) on top of Keycloak's "keycloak" v1 login theme.
+ * Colours, radii and type sizes mirror mobile/src/theme/index.ts so the Custom Tab feels like
+ * part of the app. The app uses the platform system font, so does this page.
+ */
+:root {
+  --neos-background: #faf9f6;
+  --neos-surface: #ffffff;
+  --neos-ink: #13233b;
+  --neos-muted: #657183;
+  --neos-brand: #153d85;
+  --neos-pressed: #102f68;
+  --neos-pale-blue: #eaf0fb;
+  --neos-border: #dfe3e8;
+  --neos-error: #b23c3c;
+  --neos-pale-error: #f8eaea;
+  --neos-success: #287152;
+  --neos-pale-success: #e7f1eb;
+  --neos-warning: #8b631d;
+  --neos-pale-warning: #f5eddc;
+  --neos-gold: #b39a58;
+  --neos-radius: 12px;
+  --neos-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* PatternFly 4 variables used by the v1 theme. */
+  --pf-global--FontFamily--sans-serif: var(--neos-font);
+  --pf-global--FontFamily--heading--sans-serif: var(--neos-font);
+  --pf-global--primary-color--100: var(--neos-brand);
+  --pf-global--primary-color--200: var(--neos-pressed);
+  --pf-global--link--Color: var(--neos-brand);
+  --pf-global--link--Color--hover: var(--neos-pressed);
+  --pf-global--Color--100: var(--neos-ink);
+  --pf-global--Color--200: var(--neos-muted);
+  --pf-global--BackgroundColor--100: var(--neos-surface);
+}
+
+/* Page */
+html.login-pf,
+.login-pf body {
+  background: var(--neos-background) none !important;
+  color: var(--neos-ink);
+  font-family: var(--neos-font);
+  -webkit-text-size-adjust: 100%;
+}
+.login-pf-page {
+  padding-top: 24px;
+  padding-bottom: 32px;
+}
+
+/* Wordmark: "NEOS" (the realm display name) with the gold square of the app's Brand. */
+#kc-header {
+  color: var(--neos-ink);
+  text-align: center;
+}
+#kc-header-wrapper {
+  display: inline-block;
+  padding: 20px 12px 24px;
+  color: var(--neos-ink);
+  font-family: var(--neos-font);
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+#kc-header-wrapper::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 3px;
+  background: var(--neos-gold);
+}
+div.kc-logo-text {
+  display: none;
+}
+
+/* Card */
+.card-pf {
+  max-width: 460px;
+  padding: 8px 28px 28px;
+  background: var(--neos-surface);
+  border: 1px solid var(--neos-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(19, 35, 59, 0.06);
+}
+.login-pf-header {
+  margin-bottom: 8px;
+}
+h1#kc-page-title {
+  margin: 20px 0 8px;
+  color: var(--neos-ink);
+  font-family: var(--neos-font);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+}
+
+/* Registration header: title first, "* Required fields" under it, no Bootstrap column offset. */
+.login-pf-header > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.login-pf-header [class*="col-"] {
+  float: none;
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+.login-pf-header .subtitle {
+  margin: 0 0 8px;
+  color: var(--neos-muted);
+  font-size: 14px;
+  text-align: left;
+}
+.login-pf-header .required {
+  color: var(--neos-error);
+}
+
+/* Fields */
+.pf-c-form__label,
+.pf-c-form__label-text,
+.login-pf-page .form-group label,
+.control-label {
+  color: var(--neos-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+.pf-c-form-control,
+.login-pf-page input[type="text"],
+.login-pf-page input[type="email"],
+.login-pf-page input[type="password"] {
+  min-height: 52px;
+  padding: 12px 16px;
+  color: var(--neos-ink);
+  font-size: 16px; /* 16px or more: no zoom-on-focus in mobile browsers */
+  background: var(--neos-surface);
+  border: 1px solid var(--neos-border);
+  border-radius: var(--neos-radius);
+  box-shadow: none;
+}
+.pf-c-form-control:hover {
+  border-color: var(--neos-muted);
+}
+.pf-c-form-control:focus,
+.login-pf-page input:focus {
+  border-color: var(--neos-brand);
+  outline: 2px solid var(--neos-pale-blue);
+  outline-offset: 0;
+}
+.pf-c-form-control[aria-invalid="true"] {
+  border-color: var(--neos-error);
+  background-image: none;
+}
+.pf-c-input-group .pf-c-form-control {
+  border-radius: var(--neos-radius) 0 0 var(--neos-radius);
+}
+.pf-c-input-group .pf-c-button.pf-m-control {
+  border: 1px solid var(--neos-border);
+  border-left: 0;
+  border-radius: 0 var(--neos-radius) var(--neos-radius) 0;
+  background: var(--neos-surface);
+}
+.pf-c-button.pf-m-control::after {
+  border: 0;
+}
+span[id^="input-error"],
+.pf-c-form__helper-text.pf-m-error {
+  color: var(--neos-error);
+  font-size: 14px;
+}
+
+/* Buttons: same height, radius and colours as the app's primary button. */
+.pf-c-button.pf-m-primary,
+#kc-login {
+  min-height: 56px;
+  margin-top: 8px;
+  color: #ffffff;
+  font-family: var(--neos-font);
+  font-size: 16px;
+  font-weight: 600;
+  background: var(--neos-brand);
+  border: 0;
+  border-radius: var(--neos-radius);
+}
+.pf-c-button.pf-m-primary:hover,
+.pf-c-button.pf-m-primary:focus,
+#kc-login:hover {
+  background: var(--neos-pressed);
+}
+.pf-c-button.pf-m-primary::after {
+  border: 0;
+}
+.pf-c-button.pf-m-secondary {
+  min-height: 56px;
+  color: var(--neos-brand);
+  background: var(--neos-surface);
+  border-radius: var(--neos-radius);
+}
+.pf-c-button.pf-m-secondary::after {
+  border: 1px solid var(--neos-border);
+  border-radius: var(--neos-radius);
+}
+
+/* Links, options, "Already have an account?" */
+.login-pf-page a {
+  color: var(--neos-brand);
+  font-weight: 600;
+}
+.login-pf-page a:hover,
+.login-pf-page a:focus {
+  color: var(--neos-pressed);
+}
+#kc-form-options,
+#kc-form-options .checkbox label,
+.login-pf-page .login-pf-settings {
+  color: var(--neos-muted);
+  font-size: 14px;
+}
+#kc-info,
+#kc-registration-container,
+#kc-registration {
+  color: var(--neos-muted);
+  font-size: 15px;
+}
+#kc-info-wrapper {
+  background: transparent;
+  border-top: 1px solid var(--neos-border);
+  padding: 16px 0 0;
+}
+
+/* Alerts */
+.pf-c-alert.pf-m-inline {
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--neos-radius);
+}
+.pf-c-alert.pf-m-inline::before {
+  display: none;
+}
+.pf-c-alert.pf-m-danger {
+  background: var(--neos-pale-error);
+  color: var(--neos-error);
+}
+.pf-c-alert.pf-m-success {
+  background: var(--neos-pale-success);
+  color: var(--neos-success);
+}
+.pf-c-alert.pf-m-warning {
+  background: var(--neos-pale-warning);
+  color: var(--neos-warning);
+}
+.pf-c-alert.pf-m-info {
+  background: var(--neos-pale-blue);
+  color: var(--neos-brand);
+}
+.pf-c-alert__title {
+  color: inherit;
+  font-size: 14px;
+}
+
+/* Phones: full-bleed form, left-aligned wordmark like the app header. */
+@media (max-width: 767px) {
+  .login-pf body {
+    background: var(--neos-background) !important;
+  }
+  .login-pf-page {
+    padding-top: 0;
+  }
+  #kc-header {
+    padding: 0 24px;
+    text-align: left;
+  }
+  #kc-header-wrapper {
+    padding: 16px 0 8px;
+    color: var(--neos-ink);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .login-pf-page .card-pf {
+    padding: 0 24px 24px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  h1#kc-page-title {
+    font-size: 30px;
+    line-height: 1.23;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

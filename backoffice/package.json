@@ -1,0 +1,31 @@
+{
+  "name": "neos-backoffice",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "dev:demo": "vite --mode demo --open /demo.html",
+    "build": "tsc -b && vite build && node scripts/check-production-build.mjs",
+    "build:demo": "tsc -b && vite build --mode demo",
+    "test": "vitest run",
+    "check:production": "node scripts/check-production-build.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "keycloak-js": "26.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.3.0",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "26.1.0",
+    "react-router-dom": "6.30.6",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "4.1.12"
+  }
+}

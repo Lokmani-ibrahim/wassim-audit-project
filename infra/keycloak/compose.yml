@@ -1,0 +1,56 @@
+services:
+
+  keycloak-db:
+    image: postgres:18
+    container_name: neos-keycloak-db
+
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak_dev_password
+
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.2
+    container_name: neos-keycloak
+
+    command:
+      - start-dev
+      - --import-realm
+
+    environment:
+      # Local development admin account only
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+      # Keycloak's own PostgreSQL database
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_dev_password
+
+    ports:
+      # Windows localhost:8081 -> Keycloak container:8080
+      - "8081:8080"
+
+    volumes:
+      # Realm configuration exported from Keycloak.
+      # On a fresh database, --import-realm imports files from this folder.
+      - ./realm:/opt/keycloak/data/import
+
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+
+
+volumes:
+  keycloak_db_data:
